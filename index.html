@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BFdeR - Diseño 2026</title>
+    <meta
+      name="description"
+      content="Implementación local del home BFdeR 2026 a partir del diseño provisto en Figma."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero" data-node-id="7185:9534">
+        <div class="hero__overlay"></div>
+        <header class="hero__header section-shell">
+          <a class="brand" href="#" aria-label="Bruchou &amp; Funes de Rioja">
+            <img src="./assets/logo-white.svg" alt="Bruchou & Funes de Rioja" />
+          </a>
+
+          <nav class="hero__nav" aria-label="Principal">
+            <a class="hero__nav-item" href="#">
+              <span>Nosotros</span>
+              <img src="./assets/nav-arrow.svg" alt="" />
+            </a>
+            <a class="hero__nav-item" href="./areas-de-practica.html">
+              <span>Expertise</span>
+              <img src="./assets/nav-arrow.svg" alt="" />
+            </a>
+            <a class="hero__nav-item hero__nav-item--active" href="#">
+              <span>Ejes e industrias</span>
+              <img src="./assets/nav-arrow-active.svg" alt="" />
+            </a>
+            <a class="hero__nav-item" href="#">
+              <span>Equipo</span>
+              <img src="./assets/nav-arrow.svg" alt="" />
+            </a>
+            <a class="hero__nav-item" href="#">
+              <span>Novedades</span>
+              <img src="./assets/nav-arrow.svg" alt="" />
+            </a>
+            <a class="hero__nav-item" href="#">
+              <span>Carrera</span>
+              <img src="./assets/nav-arrow.svg" alt="" />
+            </a>
+          </nav>
+
+          <button class="assistant-button assistant-button--light" type="button">
+            <img src="./assets/ai-icon-light.svg" alt="" />
+            <span>Búsqueda asistida</span>
+          </button>
+        </header>
+
+        <div class="hero__canvas section-shell">
+          <div class="hero__copy">
+            <h1>El más completo equipo de expertos con profundo conocimiento local y visión global.</h1>
+          </div>
+          <p class="hero__caption">Foto@: Frente oficinas Ingeniero Butti 107, CABA</p>
+        </div>
+
+        <div class="newsfeed">
+          <div class="newsfeed__inner section-shell">
+          <p class="newsfeed__label">Últimas novedades</p>
+          <div class="newsfeed__marquee" data-news-ticker aria-label="Ultimas novedades">
+            <div class="newsfeed__track">
+              <div class="newsfeed__items">
+            <span>IGJ avanza hacia la digitalización plena del procedimiento registral</span>
+            <span>·</span>
+            <span>Nuevas Reglas de Arbitraje ICC 2026</span>
+            <span>·</span>
+            <span>IGJ avanza en registro digital</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-cta section-shell" data-node-id="7185:9535">
+        <div class="eyebrow eyebrow--light">
+          <img src="./assets/ai-icon-dark.svg" alt="" />
+          <span>Búsqueda asistida</span>
+        </div>
+
+        <div class="home-cta__layout">
+          <div class="home-cta__copy">
+            <h2>Una capa de navegación inteligente sobre el conocimiento del estudio.</h2>
+            <p>
+              No es un simple chatbot. Devuelve resultados estructurados: área, profesionales, áreas
+              relacionadas e insights vinculados.
+            </p>
+          </div>
+
+          <div class="search-card">
+            <label class="search-input" aria-label="Búsqueda asistida">
+              <span class="search-input__main">
+                <img src="./assets/ai-icon-dark.svg" alt="" />
+                <input type="text" placeholder="Contanos qué estás buscando." />
+              </span>
+              <button type="button" aria-label="Enviar">
+                <img src="./assets/send-icon.svg" alt="" />
+              </button>
+            </label>
+
+            <div class="search-filters">
+              <button class="search-chip" type="button">
+                <span>Sectores</span>
+                <img src="./assets/select-arrow.svg" alt="" />
+              </button>
+              <button class="search-chip" type="button">
+                <span>Áreas de práctica</span>
+                <img src="./assets/select-arrow.svg" alt="" />
+              </button>
+              <button class="search-chip" type="button">
+                <span>Profesionales</span>
+                <img src="./assets/select-arrow.svg" alt="" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="timeline timeline--work section-shell" data-node-id="7185:9536">
+        <div class="timeline__content">
+          <p class="section-label">Nuestro trabajo</p>
+          <h2>De la complejidad a la decisión.</h2>
+          <p class="timeline__lede">
+            En contextos donde conviven intereses comerciales, regulatorios e institucionales, ayudamos
+            a ordenar la complejidad, anticipar riesgos y avanzar con criterio.
+          </p>
+        </div>
+      </section>
+
+      <section class="directory section-shell" data-node-id="7185:9537">
+        <div class="directory__content">
+          <p class="section-label">Sectores e industrias</p>
+          <h2>Sectores estratégicos. Mirada integral.</h2>
+          <p>
+            Trabajamos en sectores donde inversión, regulación, capital y operación se cruzan con
+            decisiones de alto impacto.
+          </p>
+          <a class="text-link text-link--navy" href="#">
+            <span>Ver nuestros ejes de atención</span>
+            <img src="./assets/directory-arrow.svg" alt="" />
+          </a>
+        </div>
+      </section>
+
+      <section class="case-study" data-node-id="7185:9538">
+        <div class="section-shell case-study__shell">
+          <p class="section-label section-label--padded">Casos de éxito</p>
+
+          <div class="case-study__intro">
+            <h2>Capacidad probada en escenarios críticos.</h2>
+            <p>
+              Una selección de operaciones, proyectos y situaciones complejas donde combinamos
+              conocimiento sectorial, coordinación multidisciplinaria y criterio estratégico para
+              acompañar decisiones de alto impacto.
+            </p>
+          </div>
+
+          <div class="case-carousel" data-carousel aria-label="Casos de exito">
+            <div class="case-carousel__viewport" tabindex="0">
+              <div class="case-carousel__track" data-carousel-track>
+            <article class="case-card case-carousel__slide" data-carousel-slide role="group" aria-roledescription="slide" aria-label="Caso 1 de 3">
+              <div class="case-card__topline">
+                <span>Ficha del asunto</span>
+                <span>№ 01</span>
+              </div>
+
+              <div class="case-card__body">
+                <div class="case-card__main">
+                  <h3>Vaca Muerta: infraestructura para el futuro exportador argentino.</h3>
+                  <p>
+                    Bruchou asesoró a VMOS en el lanzamiento del Proyecto Vaca Muerta Sur, una
+                    inversión de aproximadamente US$3.000 millones para desarrollar un oleoducto de 437
+                    km entre Allen y Punta Colorada, orientado a ampliar la capacidad de exportación de
+                    petróleo crudo desde Vaca Muerta. La operación integró petróleo y gas,
+                    financiamiento, derecho corporativo, fusiones y adquisiciones, impuestos y
+                    coordinación institucional.
+                  </p>
+                  <a class="text-link text-link--navy" href="#">
+                    <span>Leer la historia completa</span>
+                    <img src="./assets/case-arrow.svg" alt="" />
+                  </a>
+                </div>
+
+                <dl class="case-card__facts">
+                  <div>
+                    <dt>Sector</dt>
+                    <dd>Energía, recursos naturales e infraestructura</dd>
+                  </div>
+                  <div>
+                    <dt>Inversión</dt>
+                    <dd>≈ US$3.000 millones</dd>
+                  </div>
+                  <div>
+                    <dt>Infraestructura</dt>
+                    <dd>Oleoducto · 437 km</dd>
+                  </div>
+                  <div>
+                    <dt>Ruta</dt>
+                    <dd>Allen — Punta Colorada, Río Negro</dd>
+                  </div>
+                  <div class="case-card__capabilities">
+                    <dt>Capacidades</dt>
+                    <dd>
+                      <ul class="tag-list">
+                        <li>Energía</li>
+                        <li>Petróleo y gas</li>
+                        <li>Minería</li>
+                        <li>Litio</li>
+                        <li>Infraestructura</li>
+                        <li>Proyectos</li>
+                        <li>Concesiones</li>
+                        <li>Financiamiento de obras</li>
+                      </ul>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+
+            <article class="case-card case-carousel__slide" data-carousel-slide role="group" aria-roledescription="slide" aria-label="Caso 2 de 3">
+              <div class="case-card__topline">
+                <span>Ficha del asunto</span>
+                <span>№ 01</span>
+              </div>
+
+              <div class="case-card__body">
+                <div class="case-card__main">
+                  <h3>Vista Energy: emision internacional para consolidar expansion regional.</h3>
+                  <p>
+                    Bruchou asesoró a VMOS en el lanzamiento del Proyecto Vaca Muerta Sur, una
+                    inversión de aproximadamente US$3.000 millones para desarrollar un oleoducto de 437
+                    km entre Allen y Punta Colorada, orientado a ampliar la capacidad de exportación de
+                    petróleo crudo desde Vaca Muerta.
+                  </p>
+                  <a class="text-link text-link--navy" href="#">
+                    <span>Leer la historia completa</span>
+                    <img src="./assets/case-arrow.svg" alt="" />
+                  </a>
+                </div>
+
+                <dl class="case-card__facts">
+                  <div>
+                    <dt>Sector</dt>
+                    <dd>Energía, recursos naturales e infraestructura</dd>
+                  </div>
+                  <div>
+                    <dt>Inversión</dt>
+                    <dd>≈ US$3.000 millones</dd>
+                  </div>
+                  <div>
+                    <dt>Infraestructura</dt>
+                    <dd>Oleoducto · 437 km</dd>
+                  </div>
+                  <div>
+                    <dt>Ruta</dt>
+                    <dd>Allen — Punta Colorada, Río Negro</dd>
+                  </div>
+                  <div class="case-card__capabilities">
+                    <dt>Capacidades</dt>
+                    <dd>
+                      <ul class="tag-list">
+                        <li>Energía</li>
+                        <li>Petróleo y gas</li>
+                        <li>Minería</li>
+                        <li>Infraestructura</li>
+                      </ul>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+
+            <article class="case-card case-carousel__slide" data-carousel-slide role="group" aria-roledescription="slide" aria-label="Caso 3 de 3">
+              <div class="case-card__topline">
+                <span>Ficha del asunto</span>
+                <span>N&ordm; 03</span>
+              </div>
+
+              <div class="case-card__body">
+                <div class="case-card__main">
+                  <h3>Pampa Energia: colocacion de deuda para ampliar acceso al mercado.</h3>
+                  <p>
+                    Bruchou acompano a los agentes colocadores en la emision de ONs de Pampa Energia por
+                    US$200.000.000, coordinando documentacion, ejecucion regulatoria y salida al mercado en
+                    una operacion que exigio precision tecnica y velocidad de implementacion.
+                  </p>
+                  <a class="text-link text-link--navy" href="#">
+                    <span>Leer la historia completa</span>
+                    <img src="./assets/case-arrow.svg" alt="" />
+                  </a>
+                </div>
+
+                <dl class="case-card__facts">
+                  <div>
+                    <dt>Sector</dt>
+                    <dd>Energia y financiamiento</dd>
+                  </div>
+                  <div>
+                    <dt>Monto</dt>
+                    <dd>US$200.000.000</dd>
+                  </div>
+                  <div>
+                    <dt>Instrumento</dt>
+                    <dd>Obligaciones negociables</dd>
+                  </div>
+                  <div>
+                    <dt>Mercado</dt>
+                    <dd>Oferta a inversores institucionales</dd>
+                  </div>
+                  <div class="case-card__capabilities">
+                    <dt>Capacidades</dt>
+                    <dd>
+                      <ul class="tag-list">
+                        <li>Emision de deuda</li>
+                        <li>Mercado de capitales</li>
+                        <li>Energia</li>
+                        <li>Documentacion</li>
+                        <li>Regulatorio</li>
+                        <li>Colocacion</li>
+                      </ul>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="practice-explorer section-shell" data-node-id="7185:9541">
+        <div class="practice-stage practice-stage--teaser">
+          <div class="timeline__content">
+            <p class="section-label">Áreas de práctica</p>
+            <h2>La profundidad técnica de una firma integrada.</h2>
+            <p class="timeline__lede">
+              Nuestras áreas de práctica combinan especialización, experiencia sectorial y coordinación
+              multidisciplinaria para acompañar asuntos de alta complejidad desde una mirada integral.
+            </p>
+            <a class="text-link text-link--light practice-stage__trigger" href="./areas-de-practica.html">
+              <span>Explorar áreas de práctica</span>
+              <img src="./assets/practice-arrow.svg" alt="" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="insights" data-node-id="7185:9540">
+        <div class="section-shell insights__shell">
+          <aside class="insights__intro">
+            <h2>Conocimiento que conecta áreas, equipos y la agenda regulatoria.</h2>
+          </aside>
+
+          <div class="insights__list">
+            <article class="insight insight--featured">
+              <div class="insight__meta">
+                <span>Novedades</span>
+                <span>Emisión de acciones</span>
+              </div>
+              <h3>La Corte Suprema de Justicia de la Nación se expide en materia de protección de datos personales</h3>
+              <div class="insight__footer">
+                <time datetime="2026-04-07">7 Abril 2026</time>
+                <img src="./assets/insight-open.svg" alt="" />
+              </div>
+            </article>
+
+            <article class="insight">
+              <div class="insight__meta">
+                <span>New Deal</span>
+                <span>Derecho Bancario &amp; Mercado de Capitales</span>
+              </div>
+              <h3>Asesoramos en la emisión de ONs de VALO por AR$90.084.353.132</h3>
+              <div class="insight__footer">
+                <time datetime="2026-05-05">5 Mayo 2026</time>
+                <img src="./assets/insight-item-1.svg" alt="" />
+              </div>
+            </article>
+
+            <article class="insight">
+              <div class="insight__meta">
+                <span>New Deal</span>
+                <span>Derecho Bancario &amp; Mercado de Capitales</span>
+              </div>
+              <h3>Asesoramos a Vista Energy en la emisión internacional de ONs por US$500.000.000</h3>
+              <div class="insight__footer">
+                <time datetime="2026-04-23">23 Abril 2026</time>
+                <img src="./assets/insight-item-2.svg" alt="" />
+              </div>
+            </article>
+
+            <article class="insight">
+              <div class="insight__meta">
+                <span>New Deal</span>
+                <span>Emisión de Acciones</span>
+              </div>
+              <h3>Asesoramos a los agentes colocadores en la emisión de ONs de Pampa Energía por US$200.000.000</h3>
+              <div class="insight__footer">
+                <time datetime="2026-04-17">17 de Abril</time>
+                <img src="./assets/insight-item-3.svg" alt="" />
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="awards" data-node-id="7185:9539">
+        <div class="awards__overlay"></div>
+        <div class="section-shell awards__shell">
+          <div class="awards__copy">
+            <p class="section-label">Nosotros</p>
+            <h2>Premios y Distinciones</h2>
+            <p>
+              Nuestra reputación está respaldada por reconocimientos otorgados por las publicaciones
+              internacionales más prestigiosas.
+            </p>
+          </div>
+
+          <div class="awards__viewport" data-drag-scroll data-infinite-drag-scroll>
+            <div class="awards__grid">
+              <article class="award award--active">
+                <span>2026</span>
+                <h3>Chambers winners Latin American Awards</h3>
+              </article>
+              <article class="award award--soft">
+                <span>2026</span>
+                <h3>Chambers Top Ranked Global</h3>
+              </article>
+              <article class="award award--faded">
+                <span>2026</span>
+                <h3>Chambers ranked in Latin American</h3>
+              </article>
+              <article class="award award--ghost">
+                <span>2026</span>
+                <h3>Chambers Top Ranked High Net Worth</h3>
+              </article>
+              <article class="award award--ghost-2">
+                <span>2026</span>
+                <h3>Chambers Top Ranked High Net Worth</h3>
+              </article>
+            </div>
+          </div>
+
+          <a class="text-link text-link--light" href="#">
+            <span>Conocé nuestros reconocimientos</span>
+            <img src="./assets/awards-arrow.svg" alt="" />
+          </a>
+
+          <p class="awards__caption">Foto@: Oficinas Ingeniero Butti 107, CABA</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" data-node-id="7185:9547">
+      <div class="footer__main">
+        <div class="section-shell footer__shell">
+          <div class="footer__topline">
+            <img class="footer__logo" src="./assets/footer-logo.svg" alt="Bruchou & Funes de Rioja" />
+            <div class="footer__badges">
+              <img src="./assets/footer-badge-1.svg" alt="" />
+              <img src="./assets/footer-badge-2.svg" alt="" />
+              <img src="./assets/footer-iram-1.png" alt="" />
+              <img src="./assets/footer-iram-2.png" alt="" />
+            </div>
+          </div>
+
+          <div class="footer__content">
+            <div class="footer__links">
+              <div class="footer__column">
+                <h3>Nosotros</h3>
+                <a href="https://bruchoufunes.com/compromiso-sustentable/" target="_blank" rel="noreferrer">Compromiso sustentable</a>
+                <a href="https://bruchoufunes.com/premios-y-distinciones/" target="_blank" rel="noreferrer">Premios y Distinciones</a>
+                <a href="https://bruchoufunes.com/alianzas-internacionales/" target="_blank" rel="noreferrer">Alianzas internacionales</a>
+              </div>
+
+              <div class="footer__column">
+                <h3>Sectores</h3>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Asesoría</a>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Transaccional</a>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Litigios</a>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Ver todas</a>
+              </div>
+
+              <div class="footer__column">
+                <h3>Expertise</h3>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Asesoría</a>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Transaccional</a>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Litigios</a>
+                <a href="https://bruchoufunes.com/areas-de-practica/" target="_blank" rel="noreferrer">Ver todas las áreas de prácticas</a>
+              </div>
+
+              <div class="footer__column">
+                <h3>Nuestro Equipo</h3>
+                <a href="https://bruchoufunes.com/profesionales#tabs" target="_blank" rel="noreferrer">Profesionales</a>
+                <a href="https://bruchoufunes.com/profesionales#tabs" target="_blank" rel="noreferrer">Líderes de Práctica</a>
+              </div>
+
+              <div class="footer__column">
+                <h3>Generales</h3>
+                <a href="https://bruchoufunes.com/noticias/" target="_blank" rel="noreferrer">Novedades</a>
+                <a href="https://bruchoufunes.com/trabajar-en-bruchou-funes-de-rioja/" target="_blank" rel="noreferrer">Trabajar con Nosotros</a>
+                <a href="https://bruchoufunes.com/pro-bono/" target="_blank" rel="noreferrer">Pro Bono</a>
+                <a href="https://bruchoufunes.com/politica-de-privacidad/" target="_blank" rel="noreferrer">Política de Privacidad</a>
+                <a href="https://bruchoufunes.com/politica-de-privacidad/" target="_blank" rel="noreferrer">Contacto</a>
+                <a href="https://bruchoufunes.com/politica-de-privacidad/" target="_blank" rel="noreferrer">Oficinas</a>
+              </div>
+            </div>
+
+            <div class="footer__newsletter">
+              <h3>Newsletter</h3>
+              <p>Suscribite a nuestro Boletín de Noticias y Novedades.</p>
+              <label class="search-input search-input--footer" aria-label="Newsletter">
+                <span class="search-input__main">
+                  <input type="email" placeholder="Ingresá tu email" />
+                </span>
+                <button type="button" aria-label="Suscribirse">
+                  <img src="./assets/footer-send.svg" alt="" />
+                </button>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <div class="section-shell footer__bottom-shell">
+          <p>© Bruchou &amp; Funes de Rioja. Todos los derechos reservados</p>
+          <div class="footer__socials">
+            <span>Seguinos</span>
+            <a href="https://www.linkedin.com/company/bruchou" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <img src="./assets/footer-linkedin.svg" alt="" />
+            </a>
+            <a href="https://twitter.com/BruchouFunes/" target="_blank" rel="noreferrer" aria-label="X">
+              <img src="./assets/footer-x.svg" alt="" />
+            </a>
+            <a href="https://www.instagram.com/bruchoufunes/" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <img src="./assets/footer-instagram.svg" alt="" />
+            </a>
+            <a href="https://www.youtube.com/channel/UCzuU44XFqzGK_u_FkeiPQCg" target="_blank" rel="noreferrer" aria-label="YouTube">
+              <img src="./assets/footer-youtube.svg" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="./script.js"></script>
+  </body>
+</html>
