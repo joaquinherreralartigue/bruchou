@@ -18,8 +18,14 @@
   --line: #d4dae2;
   --page-gutter: 80px;
   --shell: min(1280px, calc(100vw - 160px));
+<<<<<<< HEAD
   --hero-min-height: clamp(780px, 92svh, 980px);
   --section-panel-min-height: clamp(700px, 84svh, 900px);
+=======
+  --section-page-height: 100svh;
+  --hero-min-height: var(--section-page-height);
+  --section-panel-min-height: var(--section-page-height);
+>>>>>>> 451ea4a (Fix nombre del cambio)
   --section-space: clamp(72px, 8vw, 108px);
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
@@ -182,7 +188,7 @@ section.section-shell {
 }
 
 .section-label--padded {
-  padding-inline: 32px;
+  padding-inline: 0;
 }
 
 .eyebrow--light {
@@ -357,7 +363,6 @@ section.section-shell {
 .hero__copy {
   display: flex;
   align-items: flex-end;
-  min-height: auto;
 }
 
 .hero__copy h1 {
@@ -380,10 +385,15 @@ section.section-shell {
 }
 
 .newsfeed {
-  position: relative;
+  position: absolute;
   z-index: 1;
   margin-top: auto;
   width: 100%;
+<<<<<<< HEAD
+=======
+  margin: 0;
+  bottom: 0;
+>>>>>>> 451ea4a (Fix nombre del cambio)
   padding-block: 16px;
   background: #2a2a2a;
   overflow: hidden;
@@ -790,6 +800,7 @@ section.section-shell {
 }
 
 .practice-directory {
+  min-height: var(--section-panel-min-height);
   padding: 80px;
   background: var(--white);
 }
@@ -1068,6 +1079,7 @@ section.section-shell {
 }
 
 .case-study {
+  min-height: var(--section-panel-min-height);
   padding-block: 80px;
 }
 
@@ -1081,7 +1093,7 @@ section.section-shell {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-inline: 32px;
+  padding-inline: 0;
 }
 
 .case-study__intro h2 {
@@ -1287,6 +1299,7 @@ section.section-shell {
 }
 
 .insights {
+  min-height: var(--section-panel-min-height);
   padding-block: 0;
 }
 
@@ -1300,7 +1313,7 @@ section.section-shell {
   position: sticky;
   top: 0;
   align-self: start;
-  padding: 108px 24px 48px;
+  padding: 108px 0 48px;
 }
 
 .insights__intro h2 {
@@ -1312,7 +1325,7 @@ section.section-shell {
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 70px 24px;
+  padding: 70px 0;
 }
 
 .insight {
@@ -1420,6 +1433,7 @@ section.section-shell {
 
 .awards {
   --award-card-width: 297px;
+  min-height: var(--section-panel-min-height);
   position: relative;
   overflow: hidden;
   color: #dadbdc;
@@ -1814,34 +1828,14 @@ section.section-shell {
     align-items: flex-start;
   }
 
-  .hero {
-    min-height: auto;
-  }
-
   .hero__header {
     gap: 16px;
     padding-block: 20px;
   }
 
-  .hero__canvas {
-    min-height: auto;
-    padding-top: 28px;
-  }
-
-  .hero__copy {
-    min-height: auto;
-  }
-
   .newsfeed__inner {
     grid-template-columns: 1fr;
     gap: 12px;
-  }
-
-  .home-cta,
-  .directory,
-  .timeline,
-  .awards__shell {
-    min-height: auto;
   }
 
   .practice-stage--teaser,
@@ -1851,12 +1845,12 @@ section.section-shell {
   }
 
   .practice-page-hero {
-    min-height: 700px;
+    min-height: var(--hero-min-height);
     padding-inline: 0;
   }
 
   .practice-page__canvas-shell {
-    min-height: 700px;
+    min-height: var(--hero-min-height);
     padding: 152px 0 72px;
   }
 
@@ -1866,12 +1860,12 @@ section.section-shell {
   }
 
   .practice-stage--teaser {
-    min-height: 680px;
+    min-height: var(--section-panel-min-height);
     padding-block: 72px;
   }
 
   .practice-stage--hero {
-    min-height: 620px;
+    min-height: var(--section-panel-min-height);
     padding-block: 48px;
   }
 
@@ -1986,12 +1980,12 @@ section.section-shell {
   }
 
   .practice-page-hero {
-    min-height: 640px;
+    min-height: var(--hero-min-height);
     padding-inline: 0;
   }
 
   .practice-page__canvas-shell {
-    min-height: 640px;
+    min-height: var(--hero-min-height);
     padding: 132px 0 64px;
   }
 
@@ -2010,7 +2004,7 @@ section.section-shell {
   }
 
   .practice-stage--hero {
-    min-height: 480px;
+    min-height: var(--section-panel-min-height);
     padding-block: 32px;
   }
 
