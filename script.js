@@ -1,4 +1,147 @@
 (() => {
+  const PRACTICE_TRANSITION_KEY = "practice-page-transition";
+  const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function getGsapRuntime() {
+    if (!window.gsap || !window.Flip) {
+      return null;
+    }
+
+    const globals = typeof window.gsap.core?.globals === "function" ? window.gsap.core.globals() : {};
+
+    if (!globals.Flip) {
+      window.gsap.registerPlugin(window.Flip);
+    }
+
+    return { gsap: window.gsap, Flip: window.Flip };
+  }
+
+  function shouldBypassNavigation(event, link) {
+    return (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      link.target === "_blank"
+    );
+  }
+
+  function getPracticeHeroHeight() {
+    if (window.matchMedia("(max-width: 720px)").matches) {
+      return 640;
+    }
+
+    if (window.matchMedia("(max-width: 1024px)").matches) {
+      return 700;
+    }
+
+    return 780;
+  }
+
+  function writePracticeTransition(payload) {
+    try {
+      window.sessionStorage.setItem(PRACTICE_TRANSITION_KEY, JSON.stringify(payload));
+    } catch (_error) {
+      // Ignore storage errors and fall back to a plain navigation.
+    }
+  }
+
+  function readPracticeTransition(expectedPathname) {
+    try {
+      const raw = window.sessionStorage.getItem(PRACTICE_TRANSITION_KEY);
+
+      if (!raw) {
+        return null;
+      }
+
+      const payload = JSON.parse(raw);
+
+      if (
+        !payload ||
+        typeof payload !== "object" ||
+        payload.destination !== expectedPathname ||
+        typeof payload.timestamp !== "number" ||
+        Date.now() - payload.timestamp > 5000
+      ) {
+        window.sessionStorage.removeItem(PRACTICE_TRANSITION_KEY);
+        return null;
+      }
+
+      return payload;
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function clearPracticeTransition() {
+    try {
+      window.sessionStorage.removeItem(PRACTICE_TRANSITION_KEY);
+    } catch (_error) {
+      // Ignore storage errors.
+    }
+  }
+
+  function setFixedRect(node, rect) {
+    node.style.top = `${rect.top}px`;
+    node.style.left = `${rect.left}px`;
+    node.style.width = `${rect.width}px`;
+    node.style.height = `${rect.height}px`;
+  }
+
+  function createPracticeTransitionGhost(sourceNode, variantClass) {
+    const ghost = sourceNode.cloneNode(true);
+
+    ghost.classList.add("practice-transition-ghost");
+
+    if (variantClass) {
+      ghost.classList.add(variantClass);
+    }
+
+    ghost.querySelectorAll(".reveal").forEach((node) => {
+      node.classList.remove("reveal", "is-visible");
+      node.style.removeProperty("--reveal-delay");
+    });
+
+    return ghost;
+  }
+
+  function animatePracticeContentIntro({ gsap, header, items, delay = 0 }) {
+    if (header) {
+      gsap.set(header, { autoAlpha: 0, y: -24 });
+    }
+
+    if (items.length > 0) {
+      gsap.set(items, { autoAlpha: 0, y: 28 });
+    }
+
+    const timeline = gsap.timeline({ delay });
+
+    if (header) {
+      timeline.to(header, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.48,
+        ease: "power2.out",
+      });
+    }
+
+    if (items.length > 0) {
+      timeline.to(
+        items,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.72,
+          stagger: 0.08,
+          ease: "power3.out",
+        },
+        header ? "-=0.16" : 0,
+      );
+    }
+  }
+
   function setupRevealAnimations() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealGroups = [
@@ -89,36 +232,150 @@
   }
 
   function setupPracticePageNavigation() {
-    const practiceLinks = document.querySelectorAll('a[href="./areas-de-practica.html"], a[href="areas-de-practica.html"]');
+    const runtime = getGsapRuntime();
+    const teaser = document.querySelector(".practice-explorer .practice-stage--teaser");
+    const trigger = document.querySelector('.practice-explorer .practice-stage__trigger[href="./areas-de-practica.html"]');
 
-    if (practiceLinks.length === 0) {
+    if (!teaser || !trigger || !runtime || reduceMotionQuery.matches) {
       return;
     }
 
-    const canUseViewTransition = "startViewTransition" in document;
+    const { gsap, Flip } = runtime;
 
-    practiceLinks.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        if (
-          canUseViewTransition ||
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey ||
-          link.target === "_blank"
-        ) {
-          return;
-        }
+    trigger.addEventListener("click", (event) => {
+      if (shouldBypassNavigation(event, trigger)) {
+        return;
+      }
 
-        event.preventDefault();
-        document.body.classList.add("is-page-exiting");
+      const destination = new URL(trigger.href, window.location.href);
+      const sourceRect = teaser.getBoundingClientRect();
+      const ghost = createPracticeTransitionGhost(teaser, "practice-transition-ghost--outgoing");
+      const secondarySections = Array.from(document.querySelectorAll(".page > *:not(.practice-explorer), .footer"));
 
-        window.setTimeout(() => {
-          window.location.href = link.href;
-        }, 520);
+      writePracticeTransition({
+        top: sourceRect.top,
+        left: sourceRect.left,
+        width: sourceRect.width,
+        height: sourceRect.height,
+        destination: destination.pathname,
+        timestamp: Date.now(),
       });
+
+      event.preventDefault();
+      document.body.classList.add("is-practice-transitioning");
+      teaser.classList.add("is-transition-source-hidden");
+      document.body.appendChild(ghost);
+      setFixedRect(ghost, sourceRect);
+
+      gsap.to(secondarySections, {
+        opacity: 0,
+        y: 42,
+        filter: "blur(14px)",
+        duration: 0.42,
+        ease: "power2.inOut",
+        overwrite: true,
+      });
+
+      const state = Flip.getState(ghost, {
+        props: "borderRadius,boxShadow,filter,opacity",
+      });
+
+      setFixedRect(ghost, {
+        top: 0,
+        left: 0,
+        width: window.innerWidth,
+        height: getPracticeHeroHeight(),
+      });
+
+      Flip.from(state, {
+        absolute: true,
+        duration: 0.88,
+        ease: "power3.inOut",
+        simple: true,
+        onStart: () => {
+          gsap.to(ghost, {
+            boxShadow: "0 0 0 rgba(16, 22, 34, 0)",
+            duration: 0.88,
+            ease: "power3.inOut",
+          });
+        },
+        onComplete: () => {
+          window.location.assign(destination.href);
+        },
+      });
+    });
+  }
+
+  function setupPracticePageIntro() {
+    const hero = document.querySelector(".practice-page-hero");
+
+    if (!hero) {
+      clearPracticeTransition();
+      return;
+    }
+
+    const runtime = getGsapRuntime();
+
+    if (!runtime || reduceMotionQuery.matches) {
+      clearPracticeTransition();
+      return;
+    }
+
+    const { gsap, Flip } = runtime;
+    const header = hero.querySelector(".practice-page__header");
+    const introItems = [
+      hero.querySelector(".section-label"),
+      hero.querySelector("h1"),
+      hero.querySelector(".timeline__lede"),
+      hero.querySelector(".practice-stage__trigger"),
+    ].filter(Boolean);
+    const transition = readPracticeTransition(window.location.pathname);
+
+    if (!transition) {
+      animatePracticeContentIntro({ gsap, header, items: introItems, delay: 0.08 });
+      return;
+    }
+
+    const ghost = createPracticeTransitionGhost(hero, "practice-transition-ghost--incoming");
+    const finalRect = hero.getBoundingClientRect();
+
+    hero.classList.add("is-transition-target-hidden");
+    document.body.appendChild(ghost);
+    setFixedRect(ghost, transition);
+
+    const state = Flip.getState(ghost, {
+      props: "borderRadius,boxShadow,filter,opacity",
+    });
+
+    setFixedRect(ghost, {
+      top: finalRect.top,
+      left: finalRect.left,
+      width: finalRect.width,
+      height: finalRect.height,
+    });
+
+    Flip.from(state, {
+      absolute: true,
+      duration: 0.98,
+      ease: "power3.inOut",
+      simple: true,
+      onStart: () => {
+        gsap.to(ghost, {
+          boxShadow: "0 0 0 rgba(16, 22, 34, 0)",
+          duration: 0.98,
+          ease: "power3.inOut",
+        });
+      },
+      onComplete: () => {
+        hero.classList.remove("is-transition-target-hidden");
+        animatePracticeContentIntro({ gsap, header, items: introItems, delay: 0.02 });
+        gsap.to(ghost, {
+          autoAlpha: 0,
+          duration: 0.18,
+          onComplete: () => ghost.remove(),
+        });
+        clearPracticeTransition();
+      },
     });
   }
 
@@ -489,5 +746,6 @@
   setupRevealAnimations();
   setupNewsTicker();
   setupPracticePageNavigation();
+  setupPracticePageIntro();
   setupDragScroll();
 })();
