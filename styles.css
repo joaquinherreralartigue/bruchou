@@ -365,8 +365,10 @@ section.section-shell {
 }
 
 .hero__nav-item img {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 4px;
+  flex: 0 0 auto;
+  object-fit: contain;
   transition: transform var(--motion-fast) var(--motion-ease);
 }
 
