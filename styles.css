@@ -248,9 +248,19 @@ section.section-shell {
 .hero__canvas {
   position: relative;
   z-index: 1;
+}
+
+.hero__header {
   width: var(--shell);
   margin: 0 auto;
   padding-inline: 0;
+}
+
+.hero__canvas,
+.newsfeed__inner {
+  width: 100%;
+  margin: 0;
+  padding-inline: 80px;
 }
 
 .hero__header {
@@ -335,7 +345,7 @@ section.section-shell {
   gap: 20px;
   justify-content: flex-end;
   min-height: 612px;
-  padding: 74px 0 40px;
+  padding-block: 74px 40px;
 }
 
 .hero__copy {
@@ -1779,6 +1789,11 @@ section.section-shell {
     padding-inline: 24px;
   }
 
+  .hero__canvas,
+  .newsfeed__inner {
+    padding-inline: 24px;
+  }
+
   .hero__header,
   .home-cta__layout,
   .case-card__body,
@@ -1921,6 +1936,11 @@ section.section-shell {
   }
 
   section.section-shell {
+    padding-inline: 16px;
+  }
+
+  .hero__canvas,
+  .newsfeed__inner {
     padding-inline: 16px;
   }
 
