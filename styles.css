@@ -16,7 +16,11 @@
   --accent: #ea3725;
   --footer-bottom: #263241;
   --line: #d4dae2;
+  --page-gutter: 80px;
   --shell: min(1280px, calc(100vw - 160px));
+  --section-page-height: 100svh;
+  --hero-min-height: var(--section-page-height);
+  --section-panel-min-height: var(--section-page-height);
   --section-space: clamp(72px, 8vw, 108px);
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
@@ -148,7 +152,7 @@ body.is-page-exiting .practice-explorer .practice-stage--teaser {
 section.section-shell {
   width: 100%;
   margin: 0;
-  padding-inline: 80px;
+  padding-inline: var(--page-gutter);
 }
 
 .section-label,
@@ -164,7 +168,7 @@ section.section-shell {
 }
 
 .section-label--padded {
-  padding-inline: 32px;
+  padding-inline: 0;
 }
 
 .eyebrow--light {
@@ -212,7 +216,9 @@ section.section-shell {
 
 .hero {
   position: relative;
-  min-height: 746px;
+  display: flex;
+  flex-direction: column;
+  min-height: var(--hero-min-height);
   color: #fbfaf8;
   background:
     linear-gradient(180deg, rgba(35, 28, 28, 0.14) 0%, rgba(79, 73, 64, 0.58) 100%),
@@ -236,16 +242,16 @@ section.section-shell {
 }
 
 .hero__header {
-  width: var(--shell);
-  margin: 0 auto;
-  padding-inline: 0;
+  width: 100%;
+  margin: 0;
+  padding-inline: var(--page-gutter);
 }
 
 .hero__canvas,
 .newsfeed__inner {
   width: 100%;
   margin: 0;
-  padding-inline: 80px;
+  padding-inline: var(--page-gutter);
 }
 
 .hero__header {
@@ -336,7 +342,6 @@ section.section-shell {
 .hero__copy {
   display: flex;
   align-items: flex-end;
-  min-height: auto;
 }
 
 .hero__copy h1 {
@@ -359,10 +364,11 @@ section.section-shell {
 }
 
 .newsfeed {
-  position: relative;
+  position: absolute;
   z-index: 1;
   width: 100%;
   margin: 0;
+  bottom: 0;
   padding-block: 16px;
   background: #2a2a2a;
   overflow: hidden;
@@ -424,7 +430,9 @@ section.section-shell {
 .home-cta {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 12px;
+  min-height: var(--section-panel-min-height);
   padding-block: 80px 108px;
   color: var(--page);
   background: var(--ink-strong);
@@ -597,7 +605,7 @@ section.section-shell {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 750px;
+  min-height: var(--section-panel-min-height);
   padding-block: 96px;
   overflow: hidden;
 }
@@ -732,8 +740,8 @@ section.section-shell {
 }
 
 .practice-stage--teaser {
-  min-height: 750px;
-  padding: 96px 80px;
+  min-height: var(--section-panel-min-height);
+  padding: 96px var(--page-gutter);
 }
 
 .practice-page-body {
@@ -741,7 +749,7 @@ section.section-shell {
 }
 
 .practice-page-hero {
-  min-height: 780px;
+  min-height: var(--hero-min-height);
   padding: 0;
   align-items: stretch;
 }
@@ -760,7 +768,7 @@ section.section-shell {
 .practice-page__canvas-shell {
   display: flex;
   align-items: flex-end;
-  min-height: 780px;
+  min-height: var(--hero-min-height);
   padding: 180px 0 96px;
 }
 
@@ -786,8 +794,8 @@ section.section-shell {
 }
 
 .practice-stage--hero {
-  min-height: 746px;
-  padding: 60px 80px;
+  min-height: var(--section-panel-min-height);
+  padding: 60px var(--page-gutter);
 }
 
 .practice-stage__inner {
@@ -817,6 +825,7 @@ section.section-shell {
 }
 
 .practice-directory {
+  min-height: var(--section-panel-min-height);
   padding: 80px;
   background: var(--white);
 }
@@ -1010,7 +1019,7 @@ section.section-shell {
 .directory {
   display: flex;
   align-items: center;
-  min-height: 750px;
+  min-height: var(--section-panel-min-height);
   padding-block: 80px;
   background: var(--white);
 }
@@ -1095,6 +1104,7 @@ section.section-shell {
 }
 
 .case-study {
+  min-height: var(--section-panel-min-height);
   padding-block: 80px;
 }
 
@@ -1108,7 +1118,7 @@ section.section-shell {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-inline: 32px;
+  padding-inline: 0;
 }
 
 .case-study__intro h2 {
@@ -1314,6 +1324,7 @@ section.section-shell {
 }
 
 .insights {
+  min-height: var(--section-panel-min-height);
   padding-block: 0;
 }
 
@@ -1327,7 +1338,7 @@ section.section-shell {
   position: sticky;
   top: 0;
   align-self: start;
-  padding: 108px 24px 48px;
+  padding: 108px 0 48px;
 }
 
 .insights__intro h2 {
@@ -1339,7 +1350,7 @@ section.section-shell {
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 70px 24px;
+  padding: 70px 0;
 }
 
 .insight {
@@ -1447,6 +1458,7 @@ section.section-shell {
 
 .awards {
   --award-card-width: 297px;
+  min-height: var(--section-panel-min-height);
   position: relative;
   overflow: hidden;
   color: #dadbdc;
@@ -1470,7 +1482,7 @@ section.section-shell {
   flex-direction: column;
   justify-content: flex-end;
   gap: 40px;
-  min-height: 750px;
+  min-height: var(--section-panel-min-height);
   padding-block: 80px;
 }
 
@@ -1813,6 +1825,7 @@ section.section-shell {
 
 @media (max-width: 1100px) {
   :root {
+    --page-gutter: 24px;
     --shell: min(100vw - 48px, 1280px);
   }
 
@@ -1821,12 +1834,12 @@ section.section-shell {
   }
 
   section.section-shell {
-    padding-inline: 24px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__canvas,
   .newsfeed__inner {
-    padding-inline: 24px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__header,
@@ -1840,34 +1853,14 @@ section.section-shell {
     align-items: flex-start;
   }
 
-  .hero {
-    min-height: auto;
-  }
-
   .hero__header {
     gap: 16px;
     padding-block: 20px;
   }
 
-  .hero__canvas {
-    min-height: auto;
-    padding-top: 28px;
-  }
-
-  .hero__copy {
-    min-height: auto;
-  }
-
   .newsfeed__inner {
     grid-template-columns: 1fr;
     gap: 12px;
-  }
-
-  .home-cta,
-  .directory,
-  .timeline,
-  .awards__shell {
-    min-height: auto;
   }
 
   .practice-stage--teaser,
@@ -1877,12 +1870,12 @@ section.section-shell {
   }
 
   .practice-page-hero {
-    min-height: 700px;
+    min-height: var(--hero-min-height);
     padding-inline: 0;
   }
 
   .practice-page__canvas-shell {
-    min-height: 700px;
+    min-height: var(--hero-min-height);
     padding: 152px 0 72px;
   }
 
@@ -1892,12 +1885,12 @@ section.section-shell {
   }
 
   .practice-stage--teaser {
-    min-height: 680px;
+    min-height: var(--section-panel-min-height);
     padding-block: 72px;
   }
 
   .practice-stage--hero {
-    min-height: 620px;
+    min-height: var(--section-panel-min-height);
     padding-block: 48px;
   }
 
@@ -1963,6 +1956,7 @@ section.section-shell {
 
 @media (max-width: 720px) {
   :root {
+    --page-gutter: 16px;
     --shell: calc(100vw - 32px);
   }
 
@@ -1971,12 +1965,12 @@ section.section-shell {
   }
 
   section.section-shell {
-    padding-inline: 16px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__canvas,
   .newsfeed__inner {
-    padding-inline: 16px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__header {
@@ -2011,12 +2005,12 @@ section.section-shell {
   }
 
   .practice-page-hero {
-    min-height: 640px;
+    min-height: var(--hero-min-height);
     padding-inline: 0;
   }
 
   .practice-page__canvas-shell {
-    min-height: 640px;
+    min-height: var(--hero-min-height);
     padding: 132px 0 64px;
   }
 
@@ -2035,7 +2029,7 @@ section.section-shell {
   }
 
   .practice-stage--hero {
-    min-height: 480px;
+    min-height: var(--section-panel-min-height);
     padding-block: 32px;
   }
 
