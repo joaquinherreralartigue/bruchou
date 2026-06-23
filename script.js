@@ -1,4 +1,147 @@
 (() => {
+  const PRACTICE_TRANSITION_KEY = "practice-page-transition";
+  const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function getGsapRuntime() {
+    if (!window.gsap || !window.Flip) {
+      return null;
+    }
+
+    const globals = typeof window.gsap.core?.globals === "function" ? window.gsap.core.globals() : {};
+
+    if (!globals.Flip) {
+      window.gsap.registerPlugin(window.Flip);
+    }
+
+    return { gsap: window.gsap, Flip: window.Flip };
+  }
+
+  function shouldBypassNavigation(event, link) {
+    return (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      link.target === "_blank"
+    );
+  }
+
+  function getPracticeHeroHeight() {
+    if (window.matchMedia("(max-width: 720px)").matches) {
+      return 640;
+    }
+
+    if (window.matchMedia("(max-width: 1024px)").matches) {
+      return 700;
+    }
+
+    return 780;
+  }
+
+  function writePracticeTransition(payload) {
+    try {
+      window.sessionStorage.setItem(PRACTICE_TRANSITION_KEY, JSON.stringify(payload));
+    } catch (_error) {
+      // Ignore storage errors and fall back to a plain navigation.
+    }
+  }
+
+  function readPracticeTransition(expectedPathname) {
+    try {
+      const raw = window.sessionStorage.getItem(PRACTICE_TRANSITION_KEY);
+
+      if (!raw) {
+        return null;
+      }
+
+      const payload = JSON.parse(raw);
+
+      if (
+        !payload ||
+        typeof payload !== "object" ||
+        payload.destination !== expectedPathname ||
+        typeof payload.timestamp !== "number" ||
+        Date.now() - payload.timestamp > 5000
+      ) {
+        window.sessionStorage.removeItem(PRACTICE_TRANSITION_KEY);
+        return null;
+      }
+
+      return payload;
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function clearPracticeTransition() {
+    try {
+      window.sessionStorage.removeItem(PRACTICE_TRANSITION_KEY);
+    } catch (_error) {
+      // Ignore storage errors.
+    }
+  }
+
+  function setFixedRect(node, rect) {
+    node.style.top = `${rect.top}px`;
+    node.style.left = `${rect.left}px`;
+    node.style.width = `${rect.width}px`;
+    node.style.height = `${rect.height}px`;
+  }
+
+  function createPracticeTransitionGhost(sourceNode, variantClass) {
+    const ghost = sourceNode.cloneNode(true);
+
+    ghost.classList.add("practice-transition-ghost");
+
+    if (variantClass) {
+      ghost.classList.add(variantClass);
+    }
+
+    ghost.querySelectorAll(".reveal").forEach((node) => {
+      node.classList.remove("reveal", "is-visible");
+      node.style.removeProperty("--reveal-delay");
+    });
+
+    return ghost;
+  }
+
+  function animatePracticeContentIntro({ gsap, header, items, delay = 0 }) {
+    if (header) {
+      gsap.set(header, { autoAlpha: 0, y: -24 });
+    }
+
+    if (items.length > 0) {
+      gsap.set(items, { autoAlpha: 0, y: 28 });
+    }
+
+    const timeline = gsap.timeline({ delay });
+
+    if (header) {
+      timeline.to(header, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.48,
+        ease: "power2.out",
+      });
+    }
+
+    if (items.length > 0) {
+      timeline.to(
+        items,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.72,
+          stagger: 0.08,
+          ease: "power3.out",
+        },
+        header ? "-=0.16" : 0,
+      );
+    }
+  }
+
   function setupRevealAnimations() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealGroups = [
@@ -88,37 +231,218 @@
     });
   }
 
-  function setupPracticePageNavigation() {
-    const practiceLinks = document.querySelectorAll('a[href="./areas-de-practica.html"], a[href="areas-de-practica.html"]');
+  function setupStickyHeaders() {
+    const headers = document.querySelectorAll("[data-site-header]");
+    const themedSections = Array.from(document.querySelectorAll("[data-header-theme]"));
 
-    if (practiceLinks.length === 0) {
+    if (headers.length === 0) {
       return;
     }
 
-    const canUseViewTransition = "startViewTransition" in document;
+    headers.forEach((header) => {
+      const brandLogo = header.querySelector("[data-header-logo]");
+      const navArrows = header.querySelectorAll("[data-header-arrow]");
+      const assistantIcon = header.querySelector("[data-header-assistant-icon]");
 
-    practiceLinks.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        if (
-          canUseViewTransition ||
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey ||
-          link.target === "_blank"
-        ) {
+      function setTheme(theme) {
+        const nextTheme = theme === "light" ? "light" : "dark";
+
+        if (header.dataset.currentTheme === nextTheme) {
           return;
         }
 
-        event.preventDefault();
-        document.body.classList.add("is-page-exiting");
+        header.dataset.currentTheme = nextTheme;
+        header.classList.toggle("site-header--light", nextTheme === "light");
+        header.classList.toggle("site-header--dark", nextTheme === "dark");
 
-        window.setTimeout(() => {
-          window.location.href = link.href;
-        }, 520);
+        if (brandLogo) {
+          brandLogo.src =
+            nextTheme === "light" ? "./assets/logo-dark.svg" : "./assets/logo-white.svg";
+        }
+
+        navArrows.forEach((arrow) => {
+          arrow.src =
+            nextTheme === "light" ? "./assets/nav-arrow-dark.svg" : "./assets/nav-arrow.svg";
+        });
+
+        if (assistantIcon) {
+          assistantIcon.src =
+            nextTheme === "light" ? "./assets/ai-icon-dark.svg" : "./assets/ai-icon-light.svg";
+        }
+      }
+
+      function getActiveTheme() {
+        if (themedSections.length === 0) {
+          return header.classList.contains("site-header--light") ? "light" : "dark";
+        }
+
+        const probeY = Math.min(header.offsetHeight * 0.72, 72);
+        const activeSection =
+          themedSections.find((section) => {
+            const rect = section.getBoundingClientRect();
+            return rect.top <= probeY && rect.bottom > probeY;
+          }) ||
+          [...themedSections].reverse().find((section) => section.getBoundingClientRect().top <= probeY) ||
+          themedSections[0];
+
+        return activeSection?.dataset.headerTheme || "dark";
+      }
+
+      function updateTheme() {
+        setTheme(getActiveTheme());
+      }
+
+      updateTheme();
+      window.addEventListener("scroll", updateTheme, { passive: true });
+      window.addEventListener("resize", updateTheme);
+    });
+  }
+
+  function setupPracticePageNavigation() {
+    const runtime = getGsapRuntime();
+    const teaser = document.querySelector(".practice-explorer .practice-stage--teaser");
+    const trigger = document.querySelector('.practice-explorer .practice-stage__trigger[href="./areas-de-practica.html"]');
+
+    if (!teaser || !trigger || !runtime || reduceMotionQuery.matches) {
+      return;
+    }
+
+    const { gsap, Flip } = runtime;
+
+    trigger.addEventListener("click", (event) => {
+      if (shouldBypassNavigation(event, trigger)) {
+        return;
+      }
+
+      const destination = new URL(trigger.href, window.location.href);
+      const sourceRect = teaser.getBoundingClientRect();
+      const ghost = createPracticeTransitionGhost(teaser, "practice-transition-ghost--outgoing");
+      const secondarySections = Array.from(document.querySelectorAll(".page > *:not(.practice-explorer), .footer"));
+
+      writePracticeTransition({
+        top: sourceRect.top,
+        left: sourceRect.left,
+        width: sourceRect.width,
+        height: sourceRect.height,
+        destination: destination.pathname,
+        timestamp: Date.now(),
       });
+
+      event.preventDefault();
+      document.body.classList.add("is-practice-transitioning");
+      teaser.classList.add("is-transition-source-hidden");
+      document.body.appendChild(ghost);
+      setFixedRect(ghost, sourceRect);
+
+      gsap.to(secondarySections, {
+        opacity: 0,
+        y: 42,
+        filter: "blur(14px)",
+        duration: 0.42,
+        ease: "power2.inOut",
+        overwrite: true,
+      });
+
+      const state = Flip.getState(ghost, {
+        props: "borderRadius,boxShadow,filter,opacity",
+      });
+
+      setFixedRect(ghost, {
+        top: 0,
+        left: 0,
+        width: window.innerWidth,
+        height: getPracticeHeroHeight(),
+      });
+
+      Flip.from(state, {
+        absolute: true,
+        duration: 0.88,
+        ease: "power3.inOut",
+        simple: true,
+        onStart: () => {
+          gsap.to(ghost, {
+            boxShadow: "0 0 0 rgba(16, 22, 34, 0)",
+            duration: 0.88,
+            ease: "power3.inOut",
+          });
+        },
+        onComplete: () => {
+          window.location.assign(destination.href);
+        },
+      });
+    });
+  }
+
+  function setupPracticePageIntro() {
+    const hero = document.querySelector(".practice-page-hero");
+
+    if (!hero) {
+      clearPracticeTransition();
+      return;
+    }
+
+    const runtime = getGsapRuntime();
+
+    if (!runtime || reduceMotionQuery.matches) {
+      clearPracticeTransition();
+      return;
+    }
+
+    const { gsap, Flip } = runtime;
+    const header = hero.querySelector(".practice-page__header");
+    const introItems = [
+      hero.querySelector(".section-label"),
+      hero.querySelector("h1"),
+      hero.querySelector(".timeline__lede"),
+      hero.querySelector(".practice-stage__trigger"),
+    ].filter(Boolean);
+    const transition = readPracticeTransition(window.location.pathname);
+
+    if (!transition) {
+      animatePracticeContentIntro({ gsap, header, items: introItems, delay: 0.08 });
+      return;
+    }
+
+    const ghost = createPracticeTransitionGhost(hero, "practice-transition-ghost--incoming");
+    const finalRect = hero.getBoundingClientRect();
+
+    hero.classList.add("is-transition-target-hidden");
+    document.body.appendChild(ghost);
+    setFixedRect(ghost, transition);
+
+    const state = Flip.getState(ghost, {
+      props: "borderRadius,boxShadow,filter,opacity",
+    });
+
+    setFixedRect(ghost, {
+      top: finalRect.top,
+      left: finalRect.left,
+      width: finalRect.width,
+      height: finalRect.height,
+    });
+
+    Flip.from(state, {
+      absolute: true,
+      duration: 0.98,
+      ease: "power3.inOut",
+      simple: true,
+      onStart: () => {
+        gsap.to(ghost, {
+          boxShadow: "0 0 0 rgba(16, 22, 34, 0)",
+          duration: 0.98,
+          ease: "power3.inOut",
+        });
+      },
+      onComplete: () => {
+        hero.classList.remove("is-transition-target-hidden");
+        animatePracticeContentIntro({ gsap, header, items: introItems, delay: 0.02 });
+        gsap.to(ghost, {
+          autoAlpha: 0,
+          duration: 0.18,
+          onComplete: () => ghost.remove(),
+        });
+        clearPracticeTransition();
+      },
     });
   }
 
@@ -309,6 +633,31 @@
       return;
     }
 
+    slides.forEach((slide, index) => {
+      slide.dataset.carouselIndex = String(index);
+      slide.dataset.carouselClone = "false";
+    });
+
+    if (slides.length > 1) {
+      const firstClone = slides[0].cloneNode(true);
+      const lastClone = slides[slides.length - 1].cloneNode(true);
+
+      firstClone.dataset.carouselIndex = "0";
+      firstClone.dataset.carouselClone = "true";
+      firstClone.setAttribute("aria-hidden", "true");
+      firstClone.tabIndex = -1;
+
+      lastClone.dataset.carouselIndex = String(slides.length - 1);
+      lastClone.dataset.carouselClone = "true";
+      lastClone.setAttribute("aria-hidden", "true");
+      lastClone.tabIndex = -1;
+
+      track.prepend(lastClone);
+      track.append(firstClone);
+    }
+
+    const renderedSlides = Array.from(track.querySelectorAll("[data-carousel-slide]"));
+
     let currentIndex = 0;
     let pointerId = null;
     let pointerStartX = 0;
@@ -331,17 +680,20 @@
     }
 
     function syncSlides() {
-      slides.forEach((slide, index) => {
-        const isActive = index === currentIndex;
+      renderedSlides.forEach((slide) => {
+        const index = Number(slide.dataset.carouselIndex ?? "-1");
+        const isClone = slide.dataset.carouselClone === "true";
+        const isActive = !isClone && index === currentIndex;
 
-        slide.setAttribute("aria-hidden", String(!isActive));
+        slide.setAttribute("aria-hidden", String(isClone || !isActive));
         slide.tabIndex = isActive ? 0 : -1;
         slide.classList.toggle("is-active", isActive);
+        slide.classList.toggle("is-clone", isClone);
       });
     }
 
     function render() {
-      track.style.transform = `translateX(${-(getActiveOffset()) + dragOffset}px)`;
+      track.style.transform = `translate3d(${-(getActiveOffset()) + dragOffset}px, 0, 0)`;
     }
 
     function setIndex(nextIndex) {
@@ -465,9 +817,9 @@
         return;
       }
 
-      const clickedIndex = slides.indexOf(clickedSlide);
+      const clickedIndex = Number(clickedSlide.dataset.carouselIndex ?? "-1");
 
-      if (clickedIndex >= 0 && clickedIndex !== currentIndex) {
+      if (!Number.isNaN(clickedIndex) && clickedIndex >= 0 && clickedIndex !== currentIndex) {
         event.preventDefault();
         setIndex(clickedIndex);
       }
@@ -488,6 +840,8 @@
 
   setupRevealAnimations();
   setupNewsTicker();
+  setupStickyHeaders();
   setupPracticePageNavigation();
+  setupPracticePageIntro();
   setupDragScroll();
 })();
