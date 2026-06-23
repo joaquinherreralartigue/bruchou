@@ -231,6 +231,73 @@
     });
   }
 
+  function setupStickyHeaders() {
+    const headers = document.querySelectorAll("[data-site-header]");
+    const themedSections = Array.from(document.querySelectorAll("[data-header-theme]"));
+
+    if (headers.length === 0) {
+      return;
+    }
+
+    headers.forEach((header) => {
+      const brandLogo = header.querySelector("[data-header-logo]");
+      const navArrows = header.querySelectorAll("[data-header-arrow]");
+      const assistantIcon = header.querySelector("[data-header-assistant-icon]");
+
+      function setTheme(theme) {
+        const nextTheme = theme === "light" ? "light" : "dark";
+
+        if (header.dataset.currentTheme === nextTheme) {
+          return;
+        }
+
+        header.dataset.currentTheme = nextTheme;
+        header.classList.toggle("site-header--light", nextTheme === "light");
+        header.classList.toggle("site-header--dark", nextTheme === "dark");
+
+        if (brandLogo) {
+          brandLogo.src =
+            nextTheme === "light" ? "./assets/logo-dark.svg" : "./assets/logo-white.svg";
+        }
+
+        navArrows.forEach((arrow) => {
+          arrow.src =
+            nextTheme === "light" ? "./assets/nav-arrow-dark.svg" : "./assets/nav-arrow.svg";
+        });
+
+        if (assistantIcon) {
+          assistantIcon.src =
+            nextTheme === "light" ? "./assets/ai-icon-dark.svg" : "./assets/ai-icon-light.svg";
+        }
+      }
+
+      function getActiveTheme() {
+        if (themedSections.length === 0) {
+          return header.classList.contains("site-header--light") ? "light" : "dark";
+        }
+
+        const probeY = Math.min(header.offsetHeight * 0.72, 72);
+        const activeSection =
+          themedSections.find((section) => {
+            const rect = section.getBoundingClientRect();
+            return rect.top <= probeY && rect.bottom > probeY;
+          }) ||
+          [...themedSections].reverse().find((section) => section.getBoundingClientRect().top <= probeY) ||
+          themedSections[0];
+
+        return activeSection?.dataset.headerTheme || "dark";
+      }
+
+      function updateTheme() {
+        setTheme(getActiveTheme());
+      }
+
+      updateTheme();
+      window.addEventListener("scroll", updateTheme, { passive: true });
+      window.addEventListener("resize", updateTheme);
+    });
+  }
+
   function setupPracticePageNavigation() {
     const runtime = getGsapRuntime();
     const teaser = document.querySelector(".practice-explorer .practice-stage--teaser");
@@ -566,6 +633,31 @@
       return;
     }
 
+    slides.forEach((slide, index) => {
+      slide.dataset.carouselIndex = String(index);
+      slide.dataset.carouselClone = "false";
+    });
+
+    if (slides.length > 1) {
+      const firstClone = slides[0].cloneNode(true);
+      const lastClone = slides[slides.length - 1].cloneNode(true);
+
+      firstClone.dataset.carouselIndex = "0";
+      firstClone.dataset.carouselClone = "true";
+      firstClone.setAttribute("aria-hidden", "true");
+      firstClone.tabIndex = -1;
+
+      lastClone.dataset.carouselIndex = String(slides.length - 1);
+      lastClone.dataset.carouselClone = "true";
+      lastClone.setAttribute("aria-hidden", "true");
+      lastClone.tabIndex = -1;
+
+      track.prepend(lastClone);
+      track.append(firstClone);
+    }
+
+    const renderedSlides = Array.from(track.querySelectorAll("[data-carousel-slide]"));
+
     let currentIndex = 0;
     let pointerId = null;
     let pointerStartX = 0;
@@ -588,17 +680,20 @@
     }
 
     function syncSlides() {
-      slides.forEach((slide, index) => {
-        const isActive = index === currentIndex;
+      renderedSlides.forEach((slide) => {
+        const index = Number(slide.dataset.carouselIndex ?? "-1");
+        const isClone = slide.dataset.carouselClone === "true";
+        const isActive = !isClone && index === currentIndex;
 
-        slide.setAttribute("aria-hidden", String(!isActive));
+        slide.setAttribute("aria-hidden", String(isClone || !isActive));
         slide.tabIndex = isActive ? 0 : -1;
         slide.classList.toggle("is-active", isActive);
+        slide.classList.toggle("is-clone", isClone);
       });
     }
 
     function render() {
-      track.style.transform = `translateX(${-(getActiveOffset()) + dragOffset}px)`;
+      track.style.transform = `translate3d(${-(getActiveOffset()) + dragOffset}px, 0, 0)`;
     }
 
     function setIndex(nextIndex) {
@@ -722,9 +817,9 @@
         return;
       }
 
-      const clickedIndex = slides.indexOf(clickedSlide);
+      const clickedIndex = Number(clickedSlide.dataset.carouselIndex ?? "-1");
 
-      if (clickedIndex >= 0 && clickedIndex !== currentIndex) {
+      if (!Number.isNaN(clickedIndex) && clickedIndex >= 0 && clickedIndex !== currentIndex) {
         event.preventDefault();
         setIndex(clickedIndex);
       }
@@ -745,6 +840,7 @@
 
   setupRevealAnimations();
   setupNewsTicker();
+  setupStickyHeaders();
   setupPracticePageNavigation();
   setupPracticePageIntro();
   setupDragScroll();
