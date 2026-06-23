@@ -16,7 +16,10 @@
   --accent: #ea3725;
   --footer-bottom: #263241;
   --line: #d4dae2;
+  --page-gutter: 80px;
   --shell: min(1280px, calc(100vw - 160px));
+  --hero-min-height: clamp(780px, 92svh, 980px);
+  --section-panel-min-height: clamp(700px, 84svh, 900px);
   --section-space: clamp(72px, 8vw, 108px);
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
@@ -148,7 +151,7 @@ body.is-page-exiting .practice-explorer .practice-stage--teaser {
 section.section-shell {
   width: 100%;
   margin: 0;
-  padding-inline: 80px;
+  padding-inline: var(--page-gutter);
 }
 
 .section-label,
@@ -212,7 +215,9 @@ section.section-shell {
 
 .hero {
   position: relative;
-  min-height: 746px;
+  display: flex;
+  flex-direction: column;
+  min-height: var(--hero-min-height);
   color: #fbfaf8;
   background:
     linear-gradient(180deg, rgba(35, 28, 28, 0.14) 0%, rgba(79, 73, 64, 0.58) 100%),
@@ -236,16 +241,16 @@ section.section-shell {
 }
 
 .hero__header {
-  width: var(--shell);
-  margin: 0 auto;
-  padding-inline: 0;
+  width: 100%;
+  margin: 0;
+  padding-inline: var(--page-gutter);
 }
 
 .hero__canvas,
 .newsfeed__inner {
   width: 100%;
   margin: 0;
-  padding-inline: 80px;
+  padding-inline: var(--page-gutter);
 }
 
 .hero__header {
@@ -326,6 +331,7 @@ section.section-shell {
 
 .hero__canvas {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 20px;
   justify-content: flex-end;
@@ -361,8 +367,8 @@ section.section-shell {
 .newsfeed {
   position: relative;
   z-index: 1;
+  margin-top: auto;
   width: 100%;
-  margin: 0;
   padding-block: 16px;
   background: #2a2a2a;
   overflow: hidden;
@@ -424,7 +430,9 @@ section.section-shell {
 .home-cta {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 12px;
+  min-height: var(--section-panel-min-height);
   padding-block: 80px 108px;
   color: var(--page);
   background: var(--ink-strong);
@@ -597,7 +605,7 @@ section.section-shell {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 750px;
+  min-height: var(--section-panel-min-height);
   padding-block: 96px;
   overflow: hidden;
 }
@@ -732,8 +740,8 @@ section.section-shell {
 }
 
 .practice-stage--teaser {
-  min-height: 750px;
-  padding: 96px 80px;
+  min-height: var(--section-panel-min-height);
+  padding: 96px var(--page-gutter);
 }
 
 .practice-page-body {
@@ -741,7 +749,7 @@ section.section-shell {
 }
 
 .practice-page-hero {
-  min-height: 780px;
+  min-height: var(--hero-min-height);
   padding: 0;
   align-items: stretch;
 }
@@ -760,7 +768,7 @@ section.section-shell {
 .practice-page__canvas-shell {
   display: flex;
   align-items: flex-end;
-  min-height: 780px;
+  min-height: var(--hero-min-height);
   padding: 180px 0 96px;
 }
 
@@ -786,8 +794,8 @@ section.section-shell {
 }
 
 .practice-stage--hero {
-  min-height: 746px;
-  padding: 60px 80px;
+  min-height: var(--section-panel-min-height);
+  padding: 60px var(--page-gutter);
 }
 
 .practice-stage__inner {
@@ -1010,7 +1018,7 @@ section.section-shell {
 .directory {
   display: flex;
   align-items: center;
-  min-height: 750px;
+  min-height: var(--section-panel-min-height);
   padding-block: 80px;
   background: var(--white);
 }
@@ -1470,7 +1478,7 @@ section.section-shell {
   flex-direction: column;
   justify-content: flex-end;
   gap: 40px;
-  min-height: 750px;
+  min-height: var(--section-panel-min-height);
   padding-block: 80px;
 }
 
@@ -1813,6 +1821,7 @@ section.section-shell {
 
 @media (max-width: 1100px) {
   :root {
+    --page-gutter: 24px;
     --shell: min(100vw - 48px, 1280px);
   }
 
@@ -1821,12 +1830,12 @@ section.section-shell {
   }
 
   section.section-shell {
-    padding-inline: 24px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__canvas,
   .newsfeed__inner {
-    padding-inline: 24px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__header,
@@ -1963,6 +1972,7 @@ section.section-shell {
 
 @media (max-width: 720px) {
   :root {
+    --page-gutter: 16px;
     --shell: calc(100vw - 32px);
   }
 
@@ -1971,12 +1981,12 @@ section.section-shell {
   }
 
   section.section-shell {
-    padding-inline: 16px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__canvas,
   .newsfeed__inner {
-    padding-inline: 16px;
+    padding-inline: var(--page-gutter);
   }
 
   .hero__header {
