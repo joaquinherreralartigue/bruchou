@@ -27,12 +27,6 @@
   --shadow-strong: 0 28px 72px rgba(16, 22, 34, 0.18);
 }
 
-@supports (view-transition-name: practice-stage) {
-  @view-transition {
-    navigation: auto;
-  }
-}
-
 *,
 *::before,
 *::after {
@@ -88,29 +82,50 @@ input::placeholder {
   overflow-x: clip;
 }
 
-body.is-page-exiting {
+body.is-practice-transitioning {
   overflow: hidden;
 }
 
-body.is-page-exiting .page > *,
-body.is-page-exiting .footer {
-  transition:
-    opacity 520ms var(--motion-ease),
-    transform 520ms var(--motion-ease),
-    filter 520ms var(--motion-ease);
+.practice-stage.is-transition-source-hidden {
+  visibility: hidden;
 }
 
-body.is-page-exiting .page > *:not(.practice-explorer),
-body.is-page-exiting .footer {
-  opacity: 0;
-  transform: translate3d(0, 36px, 0);
-  filter: blur(10px);
+.practice-page-hero.is-transition-target-hidden {
+  visibility: hidden;
+}
+
+.practice-transition-ghost {
+  position: fixed;
+  inset: 0 auto auto 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  z-index: 120;
+  overflow: hidden;
   pointer-events: none;
+  box-shadow: var(--shadow-strong);
+  transform-origin: top left;
+  will-change: top, left, width, height, opacity, filter, transform;
 }
 
-body.is-page-exiting .practice-explorer .practice-stage--teaser {
-  transform: scale(1.025);
-  box-shadow: var(--shadow-strong);
+.practice-transition-ghost::before {
+  animation: none;
+}
+
+.practice-transition-ghost .practice-page__header {
+  opacity: 0;
+}
+
+.practice-transition-ghost .reveal {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: none;
+}
+
+.practice-transition-ghost a,
+.practice-transition-ghost button {
+  pointer-events: none;
 }
 
 .reveal {
@@ -635,56 +650,6 @@ section.section-shell {
 .practice-explorer {
   padding-inline: 0 !important;
   scroll-margin-top: 24px;
-}
-
-@supports (view-transition-name: practice-stage) {
-  .practice-explorer .practice-stage--teaser,
-  .practice-page-hero {
-    view-transition-name: practice-stage;
-  }
-
-  .practice-explorer .section-label,
-  .practice-page__content .section-label {
-    view-transition-name: practice-label;
-  }
-
-  .practice-explorer .timeline__content h2,
-  .practice-page__content h1 {
-    view-transition-name: practice-title;
-  }
-
-  .practice-explorer .timeline__lede,
-  .practice-page__content .timeline__lede {
-    view-transition-name: practice-lede;
-  }
-
-  .practice-explorer .practice-stage__trigger,
-  .practice-page__content .practice-stage__trigger {
-    view-transition-name: practice-cta;
-  }
-
-  ::view-transition-group(practice-stage),
-  ::view-transition-group(practice-title),
-  ::view-transition-group(practice-lede),
-  ::view-transition-group(practice-cta),
-  ::view-transition-group(practice-label) {
-    animation-duration: 760ms;
-    animation-timing-function: var(--motion-ease);
-  }
-
-  ::view-transition-old(practice-stage),
-  ::view-transition-new(practice-stage),
-  ::view-transition-old(practice-title),
-  ::view-transition-new(practice-title),
-  ::view-transition-old(practice-lede),
-  ::view-transition-new(practice-lede),
-  ::view-transition-old(practice-cta),
-  ::view-transition-new(practice-cta),
-  ::view-transition-old(practice-label),
-  ::view-transition-new(practice-label) {
-    animation-duration: 760ms;
-    animation-timing-function: var(--motion-ease);
-  }
 }
 
 .practice-stage {
