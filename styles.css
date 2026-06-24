@@ -133,58 +133,65 @@ body.is-practice-transitioning {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translate3d(0, 34px, 0) scale(0.985);
-  filter: blur(10px);
-  clip-path: inset(0 0 22% 0 round 20px);
-  transform-origin: 50% 100%;
+  opacity: 1;
+  transform: none;
+  filter: none;
+  clip-path: none;
   transition:
     opacity var(--motion-slow) var(--motion-ease),
     transform var(--motion-slow) var(--motion-ease),
     filter var(--motion-base) var(--motion-ease-soft),
     clip-path var(--motion-slow) var(--motion-ease);
   transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.has-reveal-motion .reveal {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0) scale(0.985);
+  filter: blur(10px);
+  clip-path: inset(0 0 22% 0 round 20px);
+  transform-origin: 50% 100%;
   will-change: opacity, transform, filter, clip-path;
 }
 
-.reveal.is-visible {
+html.has-reveal-motion .reveal.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   filter: blur(0);
   clip-path: inset(0 0 0 0 round 0);
 }
 
-.reveal--hero {
+html.has-reveal-motion .reveal--hero {
   transform: translate3d(0, 88px, 0) scale(0.9) rotateX(14deg);
   filter: blur(18px);
   clip-path: inset(0 0 100% 0 round 28px);
 }
 
-.reveal--sweep {
+html.has-reveal-motion .reveal--sweep {
   transform: translate3d(-64px, 0, 0) scale(0.96);
   filter: blur(14px);
   clip-path: inset(0 100% 0 0 round 18px);
 }
 
-.reveal--panel {
+html.has-reveal-motion .reveal--panel {
   transform: translate3d(0, 72px, 0) scale(0.92) rotateX(12deg);
   filter: blur(18px);
   clip-path: inset(10% 0 26% 0 round 28px);
 }
 
-.reveal--card {
+html.has-reveal-motion .reveal--card {
   transform: translate3d(0, 82px, 0) scale(0.88) rotateX(18deg);
   filter: blur(18px);
   clip-path: inset(0 0 100% 0 round 24px);
 }
 
-.reveal--column {
+html.has-reveal-motion .reveal--column {
   transform: translate3d(0, 96px, 0) skewY(3deg);
   filter: blur(14px);
   clip-path: inset(0 0 100% 0 round 16px);
 }
 
-.reveal--ticker {
+html.has-reveal-motion .reveal--ticker {
   transform: translate3d(0, 30px, 0) scaleX(0.96);
   filter: blur(8px);
   clip-path: inset(0 100% 0 0);

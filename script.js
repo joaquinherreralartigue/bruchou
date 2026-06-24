@@ -90,6 +90,16 @@
     node.style.height = `${rect.height}px`;
   }
 
+  function stripRevealState(node) {
+    [...node.classList].forEach((className) => {
+      if (className === "reveal" || className === "is-visible" || className.startsWith("reveal--")) {
+        node.classList.remove(className);
+      }
+    });
+
+    node.style.removeProperty("--reveal-delay");
+  }
+
   function createPracticeTransitionGhost(sourceNode, variantClass) {
     const ghost = sourceNode.cloneNode(true);
 
@@ -100,8 +110,7 @@
     }
 
     ghost.querySelectorAll(".reveal").forEach((node) => {
-      node.classList.remove("reveal", "is-visible");
-      node.style.removeProperty("--reveal-delay");
+      stripRevealState(node);
     });
 
     return ghost;
@@ -144,6 +153,7 @@
 
   function setupRevealAnimations() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const root = document.documentElement;
     const revealGroups = [
       { selector: ".hero__header", variant: "reveal--sweep" },
       { selector: ".hero__copy", variant: "reveal--hero" },
@@ -168,6 +178,9 @@
     ];
     const seen = new Set();
     const revealNodes = [];
+    const revealNode = (node) => {
+      node.classList.add("is-visible");
+    };
 
     revealGroups.forEach(({ selector, variant }) => {
       document.querySelectorAll(selector).forEach((node) => {
@@ -190,29 +203,83 @@
       node.style.setProperty("--reveal-delay", delay);
     });
 
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-      revealNodes.forEach(({ node }) => node.classList.add("is-visible"));
+    if (revealNodes.length === 0) {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            return;
-          }
+    if (reduceMotion) {
+      revealNodes.forEach(({ node }) => revealNode(node));
+      return;
+    }
 
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        });
-      },
-      {
-        rootMargin: "0px 0px -12% 0px",
-        threshold: 0.16,
-      },
-    );
+    root.classList.add("has-reveal-motion");
+    let observer = null;
+    let fallbackBound = false;
 
-    revealNodes.forEach(({ node }) => observer.observe(node));
+    function cleanupFallbackListeners() {
+      if (!fallbackBound) {
+        return;
+      }
+
+      window.removeEventListener("scroll", revealInViewNodes);
+      window.removeEventListener("resize", revealInViewNodes);
+      fallbackBound = false;
+    }
+
+    function revealInViewNodes() {
+      revealNodes.forEach(({ node }) => {
+        if (node.classList.contains("is-visible")) {
+          return;
+        }
+
+        const rect = node.getBoundingClientRect();
+        const nearPageEnd =
+          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8;
+        const inView = rect.top <= window.innerHeight * 0.92 || nearPageEnd;
+
+        if (inView) {
+          revealNode(node);
+          observer?.unobserve(node);
+        }
+      });
+
+      if (revealNodes.every(({ node }) => node.classList.contains("is-visible"))) {
+        cleanupFallbackListeners();
+      }
+    }
+
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            revealNode(entry.target);
+            observer?.unobserve(entry.target);
+          });
+        },
+        {
+          rootMargin: "0px 0px -12% 0px",
+          threshold: 0.16,
+        },
+      );
+
+      revealNodes.forEach(({ node }) => observer.observe(node));
+    }
+
+    window.addEventListener("scroll", revealInViewNodes, { passive: true });
+    window.addEventListener("resize", revealInViewNodes);
+    fallbackBound = true;
+
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(revealInViewNodes);
+    } else {
+      window.setTimeout(revealInViewNodes, 0);
+    }
+    window.addEventListener("load", revealInViewNodes, { once: true });
+    window.setTimeout(revealInViewNodes, 240);
   }
 
   function setupNewsTicker() {
@@ -474,8 +541,7 @@
           [beforeClone, afterClone].forEach((clone) => {
             clone.dataset.clone = "true";
             clone.setAttribute("aria-hidden", "true");
-            clone.classList.remove("reveal", "is-visible");
-            clone.style.removeProperty("--reveal-delay");
+            stripRevealState(clone);
           });
 
           beforeFragment.appendChild(beforeClone);
