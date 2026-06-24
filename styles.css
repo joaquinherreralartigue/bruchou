@@ -136,17 +136,58 @@ body.is-practice-transitioning {
   opacity: 0;
   transform: translate3d(0, 34px, 0) scale(0.985);
   filter: blur(10px);
+  clip-path: inset(0 0 22% 0 round 20px);
+  transform-origin: 50% 100%;
   transition:
     opacity var(--motion-slow) var(--motion-ease),
     transform var(--motion-slow) var(--motion-ease),
-    filter var(--motion-base) var(--motion-ease-soft);
+    filter var(--motion-base) var(--motion-ease-soft),
+    clip-path var(--motion-slow) var(--motion-ease);
   transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform, filter, clip-path;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   filter: blur(0);
+  clip-path: inset(0 0 0 0 round 0);
+}
+
+.reveal--hero {
+  transform: translate3d(0, 88px, 0) scale(0.9) rotateX(14deg);
+  filter: blur(18px);
+  clip-path: inset(0 0 100% 0 round 28px);
+}
+
+.reveal--sweep {
+  transform: translate3d(-64px, 0, 0) scale(0.96);
+  filter: blur(14px);
+  clip-path: inset(0 100% 0 0 round 18px);
+}
+
+.reveal--panel {
+  transform: translate3d(0, 72px, 0) scale(0.92) rotateX(12deg);
+  filter: blur(18px);
+  clip-path: inset(10% 0 26% 0 round 28px);
+}
+
+.reveal--card {
+  transform: translate3d(0, 82px, 0) scale(0.88) rotateX(18deg);
+  filter: blur(18px);
+  clip-path: inset(0 0 100% 0 round 24px);
+}
+
+.reveal--column {
+  transform: translate3d(0, 96px, 0) skewY(3deg);
+  filter: blur(14px);
+  clip-path: inset(0 0 100% 0 round 16px);
+}
+
+.reveal--ticker {
+  transform: translate3d(0, 30px, 0) scaleX(0.96);
+  filter: blur(8px);
+  clip-path: inset(0 100% 0 0);
 }
 
 @keyframes section-pan {
@@ -1697,6 +1738,9 @@ section.section-shell {
   display: flex;
   flex-direction: column;
   gap: 50px;
+  width: 100%;
+  margin: 0;
+  padding-inline: var(--page-gutter);
   padding-top: 36px;
   padding-bottom: 80px;
 }
@@ -1717,6 +1761,7 @@ section.section-shell {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  width: 100%;
 }
 
 .footer__badges {
@@ -1724,6 +1769,9 @@ section.section-shell {
   align-items: flex-start;
   justify-content: flex-end;
   gap: 20px;
+  flex: 0 0 316px;
+  width: 316px;
+  max-width: 100%;
 }
 
 .footer__badges img {
@@ -1732,20 +1780,23 @@ section.section-shell {
 }
 
 .footer__content {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 284px);
   align-items: flex-end;
   justify-content: space-between;
-  gap: 48px;
+  gap: 50px;
+  width: 100%;
 }
 
 .footer__links {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 170px));
   gap: 24px;
+  align-items: start;
 }
 
 .footer__column {
-  width: 170px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1773,6 +1824,7 @@ section.section-shell {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  justify-self: end;
 }
 
 .footer__newsletter p {
@@ -1796,6 +1848,9 @@ section.section-shell {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  width: 100%;
+  margin: 0;
+  padding-inline: var(--page-gutter);
   padding-block: 8px 20px;
 }
 
@@ -1869,10 +1924,7 @@ section.section-shell {
 
   .hero__canvas,
   .newsfeed__inner {
-<<<<<<< HEAD
-=======
     width: 100%;
->>>>>>> 57cd420f2555cda993ab0157a55f5b9045453646
     padding-inline: var(--page-gutter);
   }
 
@@ -1985,6 +2037,11 @@ section.section-shell {
 
   .footer__links {
     width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .footer__newsletter {
+    justify-self: stretch;
   }
 }
 
@@ -2004,10 +2061,7 @@ section.section-shell {
 
   .hero__canvas,
   .newsfeed__inner {
-<<<<<<< HEAD
-=======
     width: 100%;
->>>>>>> 57cd420f2555cda993ab0157a55f5b9045453646
     padding-inline: var(--page-gutter);
   }
 
@@ -2158,11 +2212,17 @@ section.section-shell {
   .footer__badges {
     flex-wrap: wrap;
     justify-content: flex-start;
+    width: 100%;
+    flex-basis: auto;
   }
 
   .footer__column,
   .footer__newsletter {
     width: 100%;
+  }
+
+  .footer__links {
+    grid-template-columns: 1fr;
   }
 
   .footer__bottom-shell {

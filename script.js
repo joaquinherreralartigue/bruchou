@@ -145,50 +145,53 @@
   function setupRevealAnimations() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealGroups = [
-      ".hero__header",
-      ".hero__copy",
-      ".hero__caption",
-      ".newsfeed",
-      ".home-cta .eyebrow",
-      ".home-cta__copy",
-      ".search-card",
-      ".timeline__content",
-      ".directory__content",
-      ".case-study__shell > .section-label",
-      ".case-study__intro",
-      ".case-carousel",
-      ".insights__intro",
-      ".insight",
-      ".awards__copy",
-      ".award",
-      ".footer__topline",
-      ".footer__column",
-      ".footer__newsletter",
-      ".footer__bottom-shell",
+      { selector: ".hero__header", variant: "reveal--sweep" },
+      { selector: ".hero__copy", variant: "reveal--hero" },
+      { selector: ".hero__caption", variant: "reveal--sweep" },
+      { selector: ".newsfeed", variant: "reveal--ticker" },
+      { selector: ".home-cta .eyebrow", variant: "reveal--sweep" },
+      { selector: ".home-cta__copy", variant: "reveal--hero" },
+      { selector: ".search-card", variant: "reveal--panel" },
+      { selector: ".timeline__content", variant: "reveal--hero" },
+      { selector: ".directory__content", variant: "reveal--hero" },
+      { selector: ".case-study__shell > .section-label", variant: "reveal--sweep" },
+      { selector: ".case-study__intro", variant: "reveal--hero" },
+      { selector: ".case-carousel", variant: "reveal--panel" },
+      { selector: ".insights__intro", variant: "reveal--hero" },
+      { selector: ".insight", variant: "reveal--card" },
+      { selector: ".awards__copy", variant: "reveal--hero" },
+      { selector: ".award", variant: "reveal--card" },
+      { selector: ".footer__topline", variant: "reveal--sweep" },
+      { selector: ".footer__column", variant: "reveal--column" },
+      { selector: ".footer__newsletter", variant: "reveal--panel" },
+      { selector: ".footer__bottom-shell", variant: "reveal--sweep" },
     ];
     const seen = new Set();
     const revealNodes = [];
 
-    revealGroups.forEach((selector) => {
+    revealGroups.forEach(({ selector, variant }) => {
       document.querySelectorAll(selector).forEach((node) => {
         if (seen.has(node)) {
           return;
         }
 
         seen.add(node);
-        revealNodes.push(node);
+        revealNodes.push({ node, variant });
       });
     });
 
-    revealNodes.forEach((node, index) => {
-      const delay = `${Math.min((index % 6) * 70, 350)}ms`;
+    revealNodes.forEach(({ node, variant }, index) => {
+      const delay = `${Math.min((index % 5) * 95, 380)}ms`;
 
       node.classList.add("reveal");
+      if (variant) {
+        node.classList.add(variant);
+      }
       node.style.setProperty("--reveal-delay", delay);
     });
 
     if (reduceMotion || !("IntersectionObserver" in window)) {
-      revealNodes.forEach((node) => node.classList.add("is-visible"));
+      revealNodes.forEach(({ node }) => node.classList.add("is-visible"));
       return;
     }
 
@@ -209,7 +212,7 @@
       },
     );
 
-    revealNodes.forEach((node) => observer.observe(node));
+    revealNodes.forEach(({ node }) => observer.observe(node));
   }
 
   function setupNewsTicker() {
