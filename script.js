@@ -1,6 +1,7 @@
 (() => {
   const PRACTICE_TRANSITION_KEY = "practice-page-transition";
   const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
   function getGsapRuntime() {
     if (!window.gsap || !window.Flip) {
@@ -151,11 +152,29 @@
     }
   }
 
+  function hoistGlobalChrome() {
+    const page = document.querySelector(".page");
+    const hero = document.querySelector(".hero");
+    const header = document.querySelector("[data-site-header]");
+    const menuLayer = document.querySelector("[data-mega-menu-layer]");
+
+    if (!page || !hero) {
+      return;
+    }
+
+    if (header && header.parentElement === hero) {
+      page.insertBefore(header, hero);
+    }
+
+    if (menuLayer && menuLayer.parentElement === hero) {
+      page.insertBefore(menuLayer, hero);
+    }
+  }
+
   function setupRevealAnimations() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const root = document.documentElement;
     const revealGroups = [
-      { selector: ".hero__header", variant: "reveal--sweep" },
       { selector: ".hero__copy", variant: "reveal--hero" },
       { selector: ".hero__caption", variant: "reveal--sweep" },
       { selector: ".newsfeed", variant: "reveal--ticker" },
@@ -163,7 +182,11 @@
       { selector: ".home-cta__copy", variant: "reveal--hero" },
       { selector: ".search-card", variant: "reveal--panel" },
       { selector: ".timeline__content", variant: "reveal--hero" },
+      { selector: ".editorial-point", variant: "reveal--card" },
       { selector: ".directory__content", variant: "reveal--hero" },
+      { selector: ".sector-card", variant: "reveal--card" },
+      { selector: ".work-model__intro", variant: "reveal--hero" },
+      { selector: ".work-model__point", variant: "reveal--card" },
       { selector: ".case-study__shell > .section-label", variant: "reveal--sweep" },
       { selector: ".case-study__intro", variant: "reveal--hero" },
       { selector: ".case-carousel", variant: "reveal--panel" },
@@ -301,6 +324,144 @@
     });
   }
 
+  function setupMegaMenus() {
+    const layer = document.querySelector("[data-mega-menu-layer]");
+    const triggers = Array.from(document.querySelectorAll("[data-menu-trigger]"));
+    const panels = new Map(
+      Array.from(document.querySelectorAll("[data-menu-panel]")).map((panel) => [
+        panel.dataset.menuPanel,
+        panel,
+      ]),
+    );
+
+    if (!layer || triggers.length === 0 || panels.size === 0) {
+      return;
+    }
+
+    const focusableSelector =
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    let activeKey = null;
+    let closeTimer = null;
+
+    function syncHeaderTheme() {
+      window.dispatchEvent(new Event("header-theme-sync"));
+    }
+
+    function syncTriggers() {
+      triggers.forEach((trigger) => {
+        const isOpen = trigger.dataset.menuTrigger === activeKey;
+
+        trigger.classList.toggle("is-menu-open", isOpen);
+        trigger.setAttribute("aria-expanded", String(isOpen));
+      });
+    }
+
+    function finalizeClose() {
+      if (activeKey) {
+        return;
+      }
+
+      panels.forEach((panel) => {
+        panel.hidden = true;
+        panel.classList.remove("is-open");
+      });
+      layer.hidden = true;
+    }
+
+    function closeMenus({ restoreFocus = false } = {}) {
+      if (!activeKey) {
+        return;
+      }
+
+      const previousKey = activeKey;
+      const previousTrigger = triggers.find((trigger) => trigger.dataset.menuTrigger === previousKey);
+
+      activeKey = null;
+      document.body.classList.remove("has-open-menu");
+      syncTriggers();
+      syncHeaderTheme();
+
+      panels.forEach((panel) => {
+        panel.classList.remove("is-open");
+      });
+
+      window.clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(finalizeClose, 320);
+
+      if (restoreFocus) {
+        previousTrigger?.focus();
+      }
+    }
+
+    function openMenu(key, { focusPanel = false } = {}) {
+      const nextPanel = panels.get(key);
+
+      if (!nextPanel) {
+        return;
+      }
+
+      if (activeKey === key) {
+        closeMenus({ restoreFocus: true });
+        return;
+      }
+
+      window.clearTimeout(closeTimer);
+      layer.hidden = false;
+      document.body.classList.add("has-open-menu");
+
+      panels.forEach((panel, panelKey) => {
+        if (panelKey !== key) {
+          panel.classList.remove("is-open");
+          panel.hidden = true;
+        }
+      });
+
+      activeKey = key;
+      syncTriggers();
+      syncHeaderTheme();
+
+      nextPanel.hidden = false;
+
+      requestAnimationFrame(() => {
+        nextPanel.classList.add("is-open");
+      });
+
+      if (focusPanel) {
+        window.setTimeout(() => {
+          nextPanel.querySelector(focusableSelector)?.focus();
+        }, 180);
+      }
+    }
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        openMenu(trigger.dataset.menuTrigger);
+      });
+    });
+
+    layer.addEventListener("click", (event) => {
+      const closeTarget = event.target.closest("[data-menu-close]");
+
+      if (closeTarget) {
+        event.preventDefault();
+        closeMenus();
+        return;
+      }
+
+      const link = event.target.closest("a[href]");
+
+      if (link) {
+        closeMenus();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeMenus({ restoreFocus: true });
+      }
+    });
+  }
+
   function setupStickyHeaders() {
     const headers = document.querySelectorAll("[data-site-header]");
     const themedSections = Array.from(document.querySelectorAll("[data-header-theme]"));
@@ -342,6 +503,10 @@
       }
 
       function getActiveTheme() {
+        if (document.body.classList.contains("has-open-menu")) {
+          return "light";
+        }
+
         if (themedSections.length === 0) {
           return header.classList.contains("site-header--light") ? "light" : "dark";
         }
@@ -365,7 +530,89 @@
       updateTheme();
       window.addEventListener("scroll", updateTheme, { passive: true });
       window.addEventListener("resize", updateTheme);
+      window.addEventListener("header-theme-sync", updateTheme);
     });
+  }
+
+  function setupSectionScenes() {
+    if (reduceMotionQuery.matches) {
+      return;
+    }
+
+    const sceneDefinitions = [
+      { section: ".hero", content: [".hero__canvas", ".newsfeed"] },
+      { section: ".home-cta", content: [".eyebrow", ".home-cta__layout"] },
+      { section: ".timeline--work", content: [".timeline__content"] },
+      { section: ".directory", content: [".directory__shell"] },
+      { section: ".work-model", content: [".work-model__shell"] },
+      { section: ".case-study", content: [".case-study__shell"] },
+      { section: ".practice-explorer", content: [".practice-stage--teaser"] },
+      { section: ".insights", content: [".insights__shell"] },
+      { section: ".awards", content: [".awards__shell"] },
+      { section: ".practice-page-hero", content: [".practice-page__canvas-shell"] },
+      { section: ".practice-directory", content: [".practice-directory__layout"] },
+      { section: ".footer", content: [".footer__shell", ".footer__bottom-shell"] },
+    ];
+
+    const scenes = sceneDefinitions
+      .map(({ section: sectionSelector, content }) => {
+        const section = document.querySelector(sectionSelector);
+
+        if (!section) {
+          return null;
+        }
+
+        section.classList.add("section-scene");
+
+        content
+          .flatMap((selector) => Array.from(section.querySelectorAll(selector)))
+          .forEach((node) => node.classList.add("scene-content"));
+
+        return section;
+      })
+      .filter(Boolean);
+
+    if (scenes.length === 0) {
+      return;
+    }
+
+    let frameId = null;
+
+    function renderScenes() {
+      frameId = null;
+
+      const viewportHeight = window.innerHeight || 1;
+      const focusLine = viewportHeight * 0.56;
+
+      scenes.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const distanceFromFocus = Math.abs(rect.top + rect.height * 0.5 - focusLine);
+        const distanceProgress = 1 - distanceFromFocus / (viewportHeight * 0.94);
+        const enterProgress = (viewportHeight - rect.top) / (viewportHeight * 0.82);
+        const exitProgress = rect.bottom / (viewportHeight * 0.82);
+        const sceneProgress = clamp(
+          Math.max(distanceProgress, Math.min(enterProgress, exitProgress) * 0.94),
+          0,
+          1,
+        );
+
+        section.style.setProperty("--scene-progress", sceneProgress.toFixed(3));
+        section.classList.toggle("is-scene-active", sceneProgress >= 0.76);
+      });
+    }
+
+    function queueRender() {
+      if (frameId !== null) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(renderScenes);
+    }
+
+    renderScenes();
+    window.addEventListener("scroll", queueRender, { passive: true });
+    window.addEventListener("resize", queueRender);
+    window.addEventListener("load", queueRender, { once: true });
   }
 
   function setupPracticePageNavigation() {
@@ -526,6 +773,7 @@
       let startX = 0;
       let startScrollLeft = 0;
       let isDragging = false;
+      let hasDragged = false;
       let loopWidth = 0;
       let isNormalizing = false;
 
@@ -626,6 +874,12 @@
           syncInfiniteTrack();
         });
 
+        window.addEventListener("load", () => {
+          if (!hasDragged) {
+            syncInfiniteTrack();
+          }
+        });
+
         area.addEventListener("scroll", () => {
           if (isNormalizing) {
             return;
@@ -644,6 +898,7 @@
         startX = event.clientX;
         startScrollLeft = area.scrollLeft;
         isDragging = true;
+        hasDragged = true;
 
         area.classList.add("is-dragging");
         area.setPointerCapture(event.pointerId);
@@ -680,7 +935,7 @@
       area.addEventListener("pointercancel", stopDrag);
 
       window.addEventListener("resize", () => {
-        syncInfiniteTrack(true);
+        syncInfiniteTrack(hasDragged);
       });
     });
   }
@@ -907,9 +1162,12 @@
     render();
   });
 
+  hoistGlobalChrome();
   setupRevealAnimations();
   setupNewsTicker();
+  setupMegaMenus();
   setupStickyHeaders();
+  setupSectionScenes();
   setupPracticePageNavigation();
   setupPracticePageIntro();
   setupDragScroll();
