@@ -1599,90 +1599,6 @@ section.section-shell {
   line-height: 1.5;
 }
 
-.sector-card__icon {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(35, 52, 101, 0.28);
-}
-
-.sector-card__icon::before,
-.sector-card__icon::after {
-  content: "";
-  position: absolute;
-  background: var(--navy);
-  opacity: 0.82;
-}
-
-.sector-card__icon--energy::before,
-.sector-card__icon--infrastructure::before,
-.sector-card__icon--capital::before,
-.sector-card__icon--banking::before,
-.sector-card__icon--realestate::before,
-.sector-card__icon--digital::before {
-  left: 5px;
-  right: 5px;
-  top: 8px;
-  height: 1px;
-}
-
-.sector-card__icon--energy::after,
-.sector-card__icon--infrastructure::after,
-.sector-card__icon--capital::after,
-.sector-card__icon--banking::after,
-.sector-card__icon--realestate::after,
-.sector-card__icon--digital::after {
-  top: 5px;
-  bottom: 5px;
-  left: 13px;
-  width: 1px;
-}
-
-.sector-card__icon--capital::after {
-  transform: rotate(45deg);
-  transform-origin: center;
-}
-
-.sector-card__icon--banking::before {
-  top: 6px;
-}
-
-.sector-card__icon--banking::after {
-  left: 8px;
-  width: 12px;
-  height: 1px;
-  top: auto;
-  bottom: 8px;
-}
-
-.sector-card__icon--digital::before {
-  top: 50%;
-  left: 6px;
-  right: 6px;
-  height: 1px;
-}
-
-.sector-card__icon--digital::after {
-  top: 6px;
-  bottom: 6px;
-  left: 50%;
-  width: 1px;
-}
-
-.sector-card__icon--realestate::before {
-  left: 6px;
-  right: 6px;
-  top: 18px;
-  height: 1px;
-}
-
-.sector-card__icon--realestate::after {
-  left: 6px;
-  right: 6px;
-  top: 8px;
-  height: 1px;
-}
-
 .directory {
   min-height: auto;
   padding-block: 80px 92px;
@@ -3296,5 +3212,18 @@ section.section-shell {
   .leadership-strip__cards .practice-contact {
     min-width: 0;
     width: 100%;
+  }
+}
+
+.practice-stage__ctas {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+  .practice-stage__ctas {
+    flex-direction: column;
+    gap: 16px;
   }
 }

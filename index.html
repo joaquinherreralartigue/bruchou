@@ -69,6 +69,10 @@
               <span>Carrera</span>
               <img src="./assets/nav-arrow.svg" alt="" data-header-arrow />
             </a>
+            <a class="hero__nav-item" href="https://bruchoufunes.com/contacto/" target="_blank" rel="noreferrer">
+              <span>Contacto</span>
+              <img src="./assets/nav-arrow.svg" alt="" data-header-arrow />
+            </a>
           </nav>
 
           <button class="assistant-button" type="button">
@@ -268,7 +272,6 @@
 
           <div class="sector-grid" id="sectores-grid">
             <article class="sector-card" id="sector-energia">
-              <span class="sector-card__icon sector-card__icon--energy" aria-hidden="true"></span>
               <h3>Energ&iacute;a y recursos naturales</h3>
               <p>Proyectos de largo plazo en hidrocarburos y energ&iacute;as renovables donde coexisten regulaci&oacute;n sectorial cambiante, financiamiento estructurado y gesti&oacute;n de permisos ambientales.</p>
               <a class="sector-card__cta text-link text-link--navy" href="#asuntos-representativos">
@@ -277,7 +280,6 @@
               </a>
             </article>
             <article class="sector-card" id="sector-capitales">
-              <span class="sector-card__icon sector-card__icon--capital" aria-hidden="true"></span>
               <h3>Mercado de capitales</h3>
               <p>Emisiones de deuda y capital donde la precisi&oacute;n regulatoria, la velocidad de ejecuci&oacute;n y la coordinaci&oacute;n con agentes colocadores son determinantes del resultado.</p>
               <a class="sector-card__cta text-link text-link--navy" href="#asuntos-representativos">
@@ -286,7 +288,6 @@
               </a>
             </article>
             <article class="sector-card" id="sector-mya">
-              <span class="sector-card__icon sector-card__icon--infrastructure" aria-hidden="true"></span>
               <h3>Fusiones y adquisiciones</h3>
               <p>Operaciones de compraventa, fusiones y reestructuraciones societarias donde la velocidad de ejecuci&oacute;n, la confidencialidad y la precisi&oacute;n estructural definen el valor final.</p>
               <a class="sector-card__cta text-link text-link--navy" href="#asuntos-representativos">
@@ -295,7 +296,6 @@
               </a>
             </article>
             <article class="sector-card" id="sector-infraestructura">
-              <span class="sector-card__icon sector-card__icon--realestate" aria-hidden="true"></span>
               <h3>Infraestructura y concesiones</h3>
               <p>Proyectos que articulan inversi&oacute;n privada, contratos con el Estado y financiamiento de largo plazo en contextos donde la renegociaci&oacute;n y el riesgo regulatorio son permanentes.</p>
               <a class="sector-card__cta text-link text-link--navy" href="#asuntos-representativos">
@@ -304,7 +304,6 @@
               </a>
             </article>
             <article class="sector-card" id="sector-corporativo">
-              <span class="sector-card__icon sector-card__icon--banking" aria-hidden="true"></span>
               <h3>Derecho corporativo</h3>
               <p>Asesoramiento en decisiones societarias, gobierno corporativo y operaciones estrat&eacute;gicas donde la regularidad institucional y la precisi&oacute;n estructural protegen el patrimonio y los acuerdos.</p>
               <a class="sector-card__cta text-link text-link--navy" href="./areas-de-practica.html">
@@ -313,7 +312,6 @@
               </a>
             </article>
             <article class="sector-card" id="sector-litigios">
-              <span class="sector-card__icon sector-card__icon--digital" aria-hidden="true"></span>
               <h3>Litigios y arbitraje</h3>
               <p>Conflictos complejos ante tribunales y &aacute;rbitros donde la estrategia procesal, la lectura t&eacute;cnica del sector y la coordinaci&oacute;n interdisciplinaria son clave para el resultado.</p>
               <a class="sector-card__cta text-link text-link--navy" href="./areas-de-practica.html">
@@ -565,10 +563,16 @@
               </div>
             </div>
 
-            <a class="text-link text-link--light practice-stage__trigger" href="https://bruchoufunes.com/profesionales#tabs" target="_blank" rel="noreferrer">
-              <span>Conocer profesionales</span>
-              <img src="./assets/practice-arrow.svg" alt="" />
-            </a>
+            <div class="practice-stage__ctas">
+              <a class="text-link text-link--light practice-stage__trigger" href="#asuntos-representativos">
+                <span>Ver asuntos representativos</span>
+                <img src="./assets/case-arrow.svg" alt="" />
+              </a>
+              <a class="text-link text-link--light practice-stage__trigger" href="https://bruchoufunes.com/profesionales#tabs" target="_blank" rel="noreferrer">
+                <span>Conocer profesionales</span>
+                <img src="./assets/practice-arrow.svg" alt="" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -714,9 +718,10 @@
                 <span>2026</span>
                 <h3>Chambers Top Ranked High Net Worth</h3>
               </article>
+              <!-- TODO: validar reconocimiento adicional con Bruchou -->
               <article class="award award--ghost-2">
-                <span>2026</span>
-                <h3>Chambers Top Ranked High Net Worth</h3>
+                <span>&mdash;</span>
+                <h3>Reconocimiento adicional pendiente de validaci&oacute;n</h3>
               </article>
             </div>
           </div>

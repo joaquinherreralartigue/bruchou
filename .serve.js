@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const root = 'C:/Users/herre/OneDrive/Documentos/Bruchou';
+const root = __dirname;
 const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.ico':'image/x-icon'};
 http.createServer((req,res)=>{
   const urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
