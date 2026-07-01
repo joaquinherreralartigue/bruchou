@@ -115,8 +115,8 @@ export default function SectoresCapacidadesPageClient() {
                 Combinamos lectura sectorial, profundidad técnica y equipos multidisciplinarios para acompañar decisiones complejas en industrias, operaciones y escenarios críticos.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <button type="button" onClick={() => activateView("sectores")} className={`inline-flex h-[36px] items-center rounded-[4px] border px-4 font-poppins text-[13px] font-medium transition-colors ${view === "sectores" ? "border-white/70 text-[#fbfaf8]" : "border-white/28 text-[#fbfaf8]/80 hover:text-[#fbfaf8]"}`}>Sectores</button>
-                <button type="button" onClick={() => activateView("capacidades")} className={`inline-flex h-[36px] items-center rounded-[4px] border px-4 font-poppins text-[13px] font-medium transition-colors ${view === "capacidades" ? "border-white/70 text-[#fbfaf8]" : "border-white/28 text-[#fbfaf8]/80 hover:text-[#fbfaf8]"}`}>Capacidades</button>
+                <button type="button" onClick={() => activateView("sectores")} className={`inline-flex h-[36px] items-center rounded-[4px] border px-4 font-poppins text-[13px] font-medium transition-colors ${view === "sectores" ? "border-white/70 text-[#fbfaf8]" : "border-white/28 text-[#fbfaf8]/80 hover:text-[#fbfaf8]"}`}>Sectores e industrias</button>
+                <button type="button" onClick={() => activateView("capacidades")} className={`inline-flex h-[36px] items-center rounded-[4px] border px-4 font-poppins text-[13px] font-medium transition-colors ${view === "capacidades" ? "border-white/70 text-[#fbfaf8]" : "border-white/28 text-[#fbfaf8]/80 hover:text-[#fbfaf8]"}`}>Áreas de práctica</button>
               </div>
             </div>
           </div>

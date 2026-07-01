@@ -291,8 +291,8 @@ export default function Header({ variant = "dark" }: HeaderProps) {
           </MobileSection>
 
           <MobileAccordion title="Sectores y capacidades" open={mobileCapabilitiesOpen} onToggle={() => setMobileCapabilitiesOpen((v) => !v)}>
-            <MobileSection
-              title="Sectores"
+              <MobileSection
+              title="Sectores e industrias"
               open={mobileSectoresOpen}
               onToggle={() => {
                 setMobileSectoresOpen((v) => !v);
@@ -307,7 +307,7 @@ export default function Header({ variant = "dark" }: HeaderProps) {
             </MobileSection>
 
             <MobileSection
-              title="Capacidades"
+              title="Áreas de práctica"
               open={mobileAreasOpen}
               onToggle={() => {
                 setMobileAreasOpen((v) => !v);
@@ -560,7 +560,7 @@ function MegaSectores({
                         activePrimaryItem === item ? "underline decoration-current decoration-1 underline-offset-[8px]" : ""
                       }`}
                     >
-                      {item === "sectores" ? "Sectores" : "Capacidades"}
+                      {item === "sectores" ? "Sectores e industrias" : "Áreas de práctica"}
                     </span>
                     <ChevronRightIcon className={menuRowIconClass} />
                   </button>
