@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PRACTICES, PRACTICE_GROUPS, type Practice } from "@/data/practices";
+import { withBasePath } from "@/lib/paths";
 
 type ViewKey = "sectores" | "capacidades";
 
@@ -101,7 +102,7 @@ export default function SectoresCapacidadesPageClient() {
   return (
     <>
       <section className="sectores-hero relative h-[336px] min-h-[336px] max-h-[336px] overflow-hidden bg-[#0b0f17] pt-12">
-        <div className="absolute inset-0 bg-cover bg-no-repeat" style={{ backgroundImage: "url('/images/hero_sectores.png')", backgroundPosition: "center 20%" }} aria-hidden="true" />
+        <div className="absolute inset-0 bg-cover bg-no-repeat" style={{ backgroundImage: `url('${withBasePath("/images/hero_sectores.png")}')`, backgroundPosition: "center 20%" }} aria-hidden="true" />
         <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(6,11,20,0.24) 0%, rgba(6,11,20,0.64) 54%, rgba(6,11,20,0.82) 100%)" }} aria-hidden="true" />
         <div className="absolute inset-0 flex flex-col justify-center px-[var(--space-inline)] pt-[48px]">
           <div className="mx-auto w-full max-w-[1280px] grid gap-5 px-4">

@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: process.env.NODE_ENV === "production" ? "/Bruchou" : undefined,
-  assetPrefix: process.env.NODE_ENV === "production" ? "/Bruchou" : undefined,
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || undefined,
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || undefined,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
