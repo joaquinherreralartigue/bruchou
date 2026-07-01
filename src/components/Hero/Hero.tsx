@@ -25,7 +25,7 @@ export default function Hero() {
           playsInline
           preload="metadata"
         >
-          <source src="/videos/hero-bruchou-1.mp4" type="video/mp4" />
+          <source src={withBasePath("/videos/hero-bruchou-1.mp4")} type="video/mp4" />
         </video>
         <div
           className="absolute inset-0"
@@ -83,3 +83,4 @@ export default function Hero() {
     </section>
   );
 }
+import { withBasePath } from "@/lib/paths";

@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { REPRESENTATIVE_MATTERS } from "@/data/mock";
+import { withBasePath } from "@/lib/paths";
 import type { RepresentativeMatter } from "@/types";
 
 const AI_ICON = "https://www.figma.com/api/mcp/asset/bff69586-ac6a-466e-8647-e7570eda26d7";
@@ -150,7 +151,7 @@ export default function Header({ variant = "dark" }: HeaderProps) {
       className={`fixed left-0 top-0 z-50 w-full transition-[background-color,border-color,color] duration-[220ms] ease-out ${headerBgClass} ${headerBorderClass}`}
       role="banner"
     >
-      <a href="#main-content" className="skip-link">
+      <a href={withBasePath("#main-content")} className="skip-link">
         Saltar al contenido principal
       </a>
 
@@ -163,7 +164,7 @@ export default function Header({ variant = "dark" }: HeaderProps) {
             className="brand-logo shrink-0"
           >
             <img
-              src={showLight ? "/branding/logo-bfdr.svg" : "/branding/logo-bfdr-white.svg"}
+              src={withBasePath(showLight ? "/branding/logo-bfdr.svg" : "/branding/logo-bfdr-white.svg")}
               alt="Bruchou & Funes de Rioja"
               width={282}
               height={27}

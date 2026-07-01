@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { RECOGNITIONS } from "@/data/mock";
+import { withBasePath } from "@/lib/paths";
 
 export default function RecognitionsStrip() {
   if (RECOGNITIONS.length === 0) return null;
@@ -20,7 +21,7 @@ export default function RecognitionsStrip() {
             {RECOGNITIONS.map((rec) => (
               <Link
                 key={rec.id}
-                href="/reconocimientos"
+                href={withBasePath("/reconocimientos")}
                 prefetch={false}
                 aria-label={`Ver reconocimientos: ${rec.name} ${rec.year}`}
                 className="group/rec inline-flex items-baseline gap-[4px] transition-transform duration-[180ms] ease-out hover:-translate-y-[1px]"

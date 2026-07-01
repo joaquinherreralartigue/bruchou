@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { withBasePath } from "@/lib/paths";
 import { SECTORS } from "@/data/mock";
 import type { Sector } from "@/types";
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
@@ -44,7 +45,7 @@ function SectorDetail({ sector }: { sector: Sector }) {
         </ScrollReveal>
       </div>
 
-      <Link href="/sectores" prefetch={false} className="inline-flex items-center gap-2 font-poppins text-[13px] font-semibold text-[#16222f] transition-opacity hover:opacity-70">
+      <Link href={withBasePath("/sectores")} prefetch={false} className="inline-flex items-center gap-2 font-poppins text-[13px] font-semibold text-[#16222f] transition-opacity hover:opacity-70">
         Ver sectores <span aria-hidden="true">→</span>
       </Link>
     </>
@@ -65,7 +66,7 @@ export default function SectorsExplorer() {
           <h2 id="sectors-heading" className="font-fraunces text-[40px] font-normal leading-[1.08] text-[#16222f]" style={{ fontVariationSettings: '"SOFT" 0, "WONK" 1' }}>
             Sectores estratégicos. Mirada integral.
           </h2>
-          <Link href="/sectores" prefetch={false} className="inline-flex w-fit items-center gap-2 font-poppins text-[14px] font-semibold text-[#16222f] transition-opacity hover:opacity-70">
+          <Link href={withBasePath("/sectores")} prefetch={false} className="inline-flex w-fit items-center gap-2 font-poppins text-[14px] font-semibold text-[#16222f] transition-opacity hover:opacity-70">
             Ver página de sectores <span aria-hidden="true">→</span>
           </Link>
           </div>

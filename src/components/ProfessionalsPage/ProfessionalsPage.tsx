@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ProfessionalEntry } from "@/data/professionals";
+import { withBasePath } from "@/lib/paths";
 
 type ViewKey = "profesionales" | "lideres" | "consejo" | "directorio";
 
@@ -64,7 +65,7 @@ function CompactCard({ professional, index }: { professional: ProfessionalEntry;
       <div className="relative size-12 shrink-0 overflow-hidden rounded-full bg-[#e8ecf4]">
         {professional.image ? (
           <img
-            src={professional.image}
+            src={withBasePath(professional.image)}
             alt=""
             className="size-full object-cover object-top grayscale transition-[transform,filter] duration-300 ease-out group-hover:scale-[1.03] group-hover:grayscale-0 group-focus-visible:scale-[1.03] group-focus-visible:grayscale-0"
           />
@@ -98,7 +99,7 @@ function LargeCard({ professional, index }: { professional: ProfessionalEntry; i
       <div className="aspect-[3/4] w-full overflow-hidden bg-[#e8ecf4]">
         {professional.image ? (
           <img
-            src={professional.image}
+            src={withBasePath(professional.image)}
             alt=""
             className="size-full object-cover object-top grayscale transition-[transform,filter] duration-500 ease-out group-hover:scale-[1.03] group-hover:grayscale-0 group-focus-visible:scale-[1.03] group-focus-visible:grayscale-0"
           />
@@ -129,7 +130,7 @@ export default function ProfessionalsPage({ professionals }: { professionals: Pr
   const [transitioning, setTransitioning] = useState(false);
 
   useEffect(() => {
-    setActiveView(normalizeView(searchParams.get("vista")));
+    setActiveView(normalizeView(searchParams?.get("vista") ?? null));
   }, [searchParams]);
 
   useEffect(() => {

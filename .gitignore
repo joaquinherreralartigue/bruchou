@@ -1,5 +1,7 @@
 node_modules
 .next
+.out
+out
 .turbo
 qa-screenshots
 chrome-profile-cdp*

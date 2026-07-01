@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { withBasePath } from "@/lib/paths";
 import { SECTORS } from "@/data/mock";
 
 const INTRO_COPY = [
@@ -138,7 +139,7 @@ export default function SectorsPage() {
                       ))}
                     </div>
                     <Link
-                      href="/busqueda"
+                      href={withBasePath("/busqueda")}
                       prefetch={false}
                       className="inline-flex w-fit items-center gap-2 font-poppins text-[0.875rem] font-semibold text-[#171614] transition-opacity hover:opacity-70 focus-visible:opacity-70"
                     >

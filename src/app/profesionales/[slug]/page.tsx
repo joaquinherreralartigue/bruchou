@@ -3,7 +3,9 @@ import Link from "next/link";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { getProfessionalBySlug } from "@/data/professionals-server";
+import { getProfessionalsDirectory } from "@/data/professionals-server";
 import { getProfessionalDetail } from "@/data/professional-details";
+import { withBasePath } from "@/lib/paths";
 import { BioParagraphs } from "./BioParagraphs";
 
 type Params = Promise<{ slug: string }>;
@@ -20,6 +22,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     description: professional ? professional.role : "Perfil profesional del estudio.",
     alternates: { canonical: `/profesionales/${slug}` },
   };
+}
+
+export async function generateStaticParams() {
+  const professionals = await getProfessionalsDirectory();
+  return professionals.map((professional) => ({ slug: professional.slug }));
 }
 
 export default async function ProfessionalProfilePage({ params }: { params: Params }) {
@@ -46,7 +53,7 @@ export default async function ProfessionalProfilePage({ params }: { params: Para
             Perfil no disponible
           </h1>
           <Link
-            href="/profesionales"
+            href={withBasePath("/profesionales")}
             className="border border-[#233465] px-5 py-2.5 font-poppins text-[12px] font-semibold tracking-[0.2px] text-[#233465] hover:bg-[#233465] hover:text-white transition-colors rounded-[2px]"
           >
             Volver al directorio
@@ -82,7 +89,7 @@ export default async function ProfessionalProfilePage({ params }: { params: Para
                 <div className="h-[clamp(280px,50vw,452px)] w-full overflow-hidden rounded-[2px] lg:h-[452px]">
                   {professional.image ? (
                     <img
-                      src={professional.image}
+                      src={withBasePath(professional.image)}
                       alt={professional.name}
                       className="size-full object-cover object-top"
                     />

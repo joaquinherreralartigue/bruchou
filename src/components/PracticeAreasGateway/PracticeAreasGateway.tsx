@@ -5,7 +5,7 @@ export default function PracticeAreasGateway() {
     <section className="relative min-h-[80dvh] overflow-hidden px-[var(--space-inline)] py-[var(--space-section)]" aria-labelledby="practice-heading">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-black" />
-        <img src={BG_IMAGE} alt="" className="animate-slow-pan absolute inset-0 size-full object-cover opacity-75" />
+        <img src={withBasePath(BG_IMAGE)} alt="" className="animate-slow-pan absolute inset-0 size-full object-cover opacity-75" />
         <div className="absolute inset-0 bg-[rgba(35,28,28,0.3)] mix-blend-luminosity" />
         <div
           className="absolute inset-0 mix-blend-multiply"
@@ -26,7 +26,7 @@ export default function PracticeAreasGateway() {
           <p className="mt-[24px] font-poppins text-[20px] leading-[1.2] text-[#ebebeb]">
             Combinamos lectura sectorial, profundidad técnica y coordinación multidisciplinaria para acompañar asuntos de alta complejidad desde una mirada integral.
           </p>
-          <a href="/sectores-y-capacidades" className="group mt-[24px] inline-flex h-[37px] items-center gap-[10px] py-[8px] font-poppins text-[14px] font-bold text-[#f4efed] transition-opacity hover:opacity-80">
+          <a href={withBasePath("/sectores-y-capacidades")} className="group mt-[24px] inline-flex h-[37px] items-center gap-[10px] py-[8px] font-poppins text-[14px] font-bold text-[#f4efed] transition-opacity hover:opacity-80">
             Explorar capacidades
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="shrink-0 transition-transform duration-[200ms] ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[2px]">
               <path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
@@ -37,3 +37,4 @@ export default function PracticeAreasGateway() {
     </section>
   );
 }
+import { withBasePath } from "@/lib/paths";

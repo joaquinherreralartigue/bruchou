@@ -2,6 +2,7 @@
 import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal/ScrollReveal";
 import type { CSSProperties } from "react";
+import { withBasePath } from "@/lib/paths";
 
 const CERT_1      = "/certs/cert-conet.png";
 const CERT_2      = "/certs/cert-2.png";
@@ -69,7 +70,7 @@ export default function Footer() {
             <Link href="/" prefetch={false} aria-label="Bruchou & Funes de Rioja — Inicio">
               {/* footer-logo: specific size to avoid touching .brand-logo used in the header */}
               <img
-                src="/branding/logo-bfdr-white.svg"
+                src={withBasePath("/branding/logo-bfdr-white.svg")}
                 alt="Bruchou & Funes de Rioja"
                 width={251}
                 height={24}
@@ -77,10 +78,10 @@ export default function Footer() {
               />
             </Link>
             <div className="reveal-stagger flex flex-wrap items-center gap-5">
-              <img src={CERT_1}      alt="Certificación CONET" className="h-11 w-auto"                                  />
-              <img src={CERT_2}      alt="Certificación"       className="h-11 w-auto"                                  />
-              <img src={CERT_IRAM_1} alt="IRAM"               className="h-11 w-auto opacity-70 mix-blend-luminosity"  />
-              <img src={CERT_IRAM_2} alt="ISO"                className="h-11 w-auto opacity-70 mix-blend-luminosity"  />
+            <img src={withBasePath(CERT_1)}      alt="Certificación CONET" className="h-11 w-auto"                                  />
+            <img src={withBasePath(CERT_2)}      alt="Certificación"       className="h-11 w-auto"                                  />
+            <img src={withBasePath(CERT_IRAM_1)} alt="IRAM"               className="h-11 w-auto opacity-70 mix-blend-luminosity"  />
+            <img src={withBasePath(CERT_IRAM_2)} alt="ISO"                className="h-11 w-auto opacity-70 mix-blend-luminosity"  />
             </div>
           </div>
 
@@ -185,7 +186,7 @@ export default function Footer() {
               >
                 {/* -scale-y-100: Figma stores these icons with inverted Y axis */}
                 <span className="-scale-y-100 block size-[15px]">
-                  <img src={icon} alt="" aria-hidden="true" className="block size-full" />
+                  <img src={withBasePath(icon)} alt="" aria-hidden="true" className="block size-full" />
                 </span>
               </a>
             ))}

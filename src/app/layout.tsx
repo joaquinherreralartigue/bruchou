@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import { withBasePath } from "@/lib/paths";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.bfdr.com.ar"),
+  metadataBase: new URL("https://joaquinherreralartigue.github.io"),
   title: {
     default: "Bruchou & Funes de Rioja | Liderazgo jurídico para escenarios de alta complejidad",
     template: "%s | Bruchou & Funes de Rioja",
@@ -17,8 +18,8 @@ export const metadata: Metadata = {
     siteName: "Bruchou & Funes de Rioja",
   },
   alternates: {
-    canonical: "/",
-    languages: { es: "/", en: "/en" },
+    canonical: withBasePath("/"),
+    languages: { es: withBasePath("/"), en: withBasePath("/en") },
   },
   robots: { index: true, follow: true },
 };
